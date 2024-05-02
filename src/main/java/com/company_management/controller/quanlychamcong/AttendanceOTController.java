@@ -2,9 +2,9 @@ package com.company_management.controller.quanlychamcong;
 
 import com.company_management.common.ErrorCode;
 import com.company_management.common.ResultResp;
-import com.company_management.model.dto.AttendanceLeaveDTO;
-import com.company_management.model.request.SearchLeaveRequest;
-import com.company_management.service.AttendanceLeaveService;
+import com.company_management.model.dto.AttendanceOTDTO;
+import com.company_management.model.request.SearchAttendanceOTRequest;
+import com.company_management.service.AttendanceOTService;
 import com.company_management.utils.CommonUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,46 +20,46 @@ import java.io.ByteArrayInputStream;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/leave")
-public class AttendanceLeaveController {
+@RequestMapping("/api/v1/attendanceOt")
+public class AttendanceOTController {
 
-    private final AttendanceLeaveService attendanceLeaveService;
+    private final AttendanceOTService attendanceOTService;
 
     @PostMapping("/search")
-    public ResultResp<Object> searchLeave(@RequestBody SearchLeaveRequest searchLeaveRequest,
+    public ResultResp<Object> searchOT(@RequestBody SearchAttendanceOTRequest searchAttendanceOTRequest,
                                              Pageable pageable) {
-        return ResultResp.success(attendanceLeaveService.search(searchLeaveRequest, pageable));
+        return ResultResp.success(attendanceOTService.search(searchAttendanceOTRequest, pageable));
     }
 
     @PostMapping
-    public ResultResp<Object> createLeave(@Valid @RequestBody AttendanceLeaveDTO leaveDTO) {
-        attendanceLeaveService.createOrUpdate(leaveDTO);
+    public ResultResp<Object> createOT(@Valid @RequestBody AttendanceOTDTO attendanceOTDTO) {
+        attendanceOTService.createOrUpdate(attendanceOTDTO);
         return ResultResp.success(ErrorCode.CREATED_OK, null);
     }
 
     @GetMapping("/detail/{id}")
-    public ResultResp<Object> getByIdLeave(@PathVariable("id") Long id) {
-        return ResultResp.success(ErrorCode.CREATED_OK, attendanceLeaveService.detailLeave(id));
+    public ResultResp<Object> getByIdOT(@PathVariable("id") Long id) {
+        return ResultResp.success(ErrorCode.CREATED_OK, attendanceOTService.detailOT(id));
     }
 
     @PutMapping
-    public ResultResp<Object> updateLeave(@Valid @RequestBody AttendanceLeaveDTO leaveDTO) {
-        attendanceLeaveService.createOrUpdate(leaveDTO);
+    public ResultResp<Object> updateOT(@Valid @RequestBody AttendanceOTDTO leaveDTO) {
+        attendanceOTService.createOrUpdate(leaveDTO);
         return ResultResp.success(ErrorCode.UPDATED_OK, null);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResultResp<Object> deleteLeave(@PathVariable("id") Long id) {
-        attendanceLeaveService.deleteLeave(id);
+    public ResultResp<Object> deleteOT(@PathVariable("id") Long id) {
+        attendanceOTService.deleteOT(id);
         return ResultResp.success(ErrorCode.DELETED_OK, null);
     }
 
     @PostMapping(value = "/export")
-    public ResponseEntity<Object> exportExcel(@RequestBody SearchLeaveRequest searchLeaveRequest, Pageable pageable) {
-        ByteArrayInputStream result = attendanceLeaveService.exportExcel(searchLeaveRequest, pageable);
+    public ResponseEntity<Object> exportExcel(@RequestBody SearchAttendanceOTRequest searchAttendanceOTRequest, Pageable pageable) {
+        ByteArrayInputStream result = attendanceOTService.exportExcel(searchAttendanceOTRequest, pageable);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-        String fileName = CommonUtils.getFileNameReportUpdate("EXPORT_LEAVE");
+        String fileName = CommonUtils.getFileNameReportUpdate("EXPORT_OT");
         headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName);
         return new ResponseEntity<>(new InputStreamResource(result), headers, HttpStatus.OK);
     }
