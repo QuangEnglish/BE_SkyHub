@@ -1,9 +1,12 @@
 package com.company_management.service;
 
+import com.company_management.exception.AppException;
 import com.company_management.exception.BadRequestException;
 import com.company_management.model.dto.UserCustomDTO;
 import com.company_management.model.entity.UserCustom;
+import com.company_management.model.entity.UserDetail;
 import com.company_management.repository.UserCustomRepository;
+import com.company_management.repository.UserDetailRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
@@ -27,6 +30,7 @@ import java.util.function.Function;
 @RequiredArgsConstructor
 public class JwtService {
     private final UserCustomRepository userCustomRepository;
+    private final UserDetailRepository userDetailRepository;
     private static final String SERCRET_KEY = "404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970";
 
     public String extractUserName(String token) {
@@ -58,9 +62,13 @@ public class JwtService {
         try {
             UserCustom userCustom =
                     userCustomRepository.findByEmail(user.getUsername()).orElseThrow(() -> new BadRequestException("Không tìm thấy User"));
+            UserDetail userDetail = userDetailRepository.findById(userCustom.getUserDetailId()).orElseThrow(
+                    () -> new AppException("ERR01", "Không tìm thấy nhân viên!")
+            );
             UserCustomDTO userCustomDTO = new UserCustomDTO();
             userCustomDTO.setId(userCustom.getId());
             userCustomDTO.setUserDetailId(userCustom.getUserDetailId());
+            userCustomDTO.setUserDetailName(userDetail.getEmployeeName());
             userCustomDTO.setUserName(userCustom.getUsername());
             userCustomDTO.setEmail(userCustom.getEmail());
             jsonUserCustom = convertObjectToJson(userCustomDTO);

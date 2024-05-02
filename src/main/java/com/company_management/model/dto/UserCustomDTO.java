@@ -27,6 +27,7 @@ public class UserCustomDTO {
     private String confirmPassword;
     private String email;
     private Long userDetailId;
+    private String userDetailName;
     private Long companyId;
     private String companyName;
     private Set<RoleDTO> roles;
