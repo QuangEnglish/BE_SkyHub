@@ -53,13 +53,13 @@ public class AttendanceOTServiceImpl implements AttendanceOTService {
     @Transactional
     public void createOrUpdate(AttendanceOTDTO attendanceOTDTO) {
         AttendanceOt attendanceOT;
-        if (attendanceOTDTO.getId() == null) {
+        if (attendanceOTDTO.getAttendanceOtID() == null) {
             log.debug("// Them moi đơn ot");
             attendanceOT = new AttendanceOt();
             attendanceOT = attendanceOTMapper.toEntity(attendanceOTDTO);
             attendanceOT.setIsActive(2);
         } else {
-            attendanceOT = attendanceOTRepository.findById(attendanceOTDTO.getId())
+            attendanceOT = attendanceOTRepository.findById(attendanceOTDTO.getAttendanceOtID())
                     .orElseThrow(() -> new AppException("ERO01", "Đơn đăng ký lịch ot không tồn tại"));
             log.debug("// Cap nhat đơn ot");
             if(!DataUtils.isNullOrEmpty(attendanceOTDTO.getStartDay())){

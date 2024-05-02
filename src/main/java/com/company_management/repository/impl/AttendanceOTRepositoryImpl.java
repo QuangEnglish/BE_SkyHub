@@ -143,7 +143,7 @@ public class AttendanceOTRepositoryImpl implements AttendanceOTRepositoryCustom 
             map.put("startDay", searchOTRequest.getStartDay());
         }
         if (!DataUtils.isNullOrEmpty(searchOTRequest.getEmployeeId())) {
-            sqlSelect.append("  and le.employee_id <= :employeeId");
+            sqlSelect.append("  and le.employee_id = :employeeId");
             map.put("employeeId", searchOTRequest.getEmployeeId());
         }
         if (!DataUtils.isNullOrEmpty(searchOTRequest.getIsActive())) {

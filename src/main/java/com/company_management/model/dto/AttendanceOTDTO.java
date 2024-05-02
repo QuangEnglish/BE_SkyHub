@@ -14,7 +14,7 @@ import java.util.Date;
 public class AttendanceOTDTO {
 
     private int index;
-    private Long id;
+    private Long attendanceOtID;
     private Date startDay;  // ngày chấm công ot
     private Date startTime; //thời gian bắt đầu
     private Date endTime; //thời gian kết thúc
