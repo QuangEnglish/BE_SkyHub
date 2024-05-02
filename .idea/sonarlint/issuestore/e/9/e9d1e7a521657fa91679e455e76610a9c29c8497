@@ -1,0 +1,11 @@
+
+
+java:S14887"nImmediately return this expression instead of assigning it to the temporary variable "simpleGrantedAuthority".(¦«öŒøÿÿÿÿ8ñŒãóß1
+K
+java:S1948/")Make "company" transient or serializable.(ûÖòùÿÿÿÿ8¢ãóß1
+D
+java:S19483"'Make "roles" transient or serializable.(ÁÀö»8£ãóß1
+t
+java:S62047"RReplace this usage of 'Stream.collect(Collectors.toList())' with 'Stream.toList()'(¦«öŒøÿÿÿÿ8Âãóß1
+e
+java:S4275A"HRefactor this getter so that it actually refers to the field "username".(ú´­÷8µÓ¢õß1

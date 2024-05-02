@@ -1,0 +1,16 @@
+
+g	java:S101"MRename this class name to match the regular expression '^[A-Z][a-zA-Z0-9]*$'.(·¡êşÿÿÿÿ
+H
+java:S6126$"2Replace this String concatenation with Text block.(Â¥‰Ã
+\
+java:S1854n":Remove this useless assignment to local variable "strSql".(“ô¦›ıÿÿÿÿ8˜èñ¸Ú1
+M
+java:S1481n"+Remove this unused "strSql" local variable.(“ô¦›ıÿÿÿÿ8èñ¸Ú1
+T
+java:S6126x"2Replace this String concatenation with Text block.(çÙ¢òúÿÿÿÿ8¢èñ¸Ú1
+`
+java:S1128"CRemove this unused import 'com.company_management.common.DateUtil'.(‚ü×¹8²èñ¸Ú1
+h
+java:S1128"KRemove this unused import 'com.company_management.model.entity.UserCustom'.(û“ÔÄ8³èñ¸Ú1
+Z
+java:S1128"8Remove this unused import 'java.util.stream.Collectors'.(Óóº´úÿÿÿÿ8³èñ¸Ú1

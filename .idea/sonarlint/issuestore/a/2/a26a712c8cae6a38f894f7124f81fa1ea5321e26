@@ -1,0 +1,239 @@
+
+\	java:S112ò"FDefine and throw a dedicated exception instead of using a generic one.(ÑÌÛ
+a	java:S112¦
+"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ
+a	java:S112¬
+"FDefine and throw a dedicated exception instead of using a generic one.(á• ãùÿÿÿÿ
+\	java:S112¶"FDefine and throw a dedicated exception instead of using a generic one.(È”úÅ
+J
+java:S3740#"/Provide the parametrized type for this generic.(÷Ú›Ëüÿÿÿÿ
+J
+java:S3740-"/Provide the parametrized type for this generic.(ˆúå¨şÿÿÿÿ
+D
+java:S3740º"/Provide the parametrized type for this generic.(ÔM
+F
+java:S3740Ô"/Provide the parametrized type for this generic.(Ä«„œ
+K
+java:S3740ÿ"/Provide the parametrized type for this generic.(Ì¢™‹øÿÿÿÿ
+_
+java:S6208±"CMerge the previous cases into this one using comma-separated label.(ñÌòÖùÿÿÿÿ
+_
+java:S6208À"CMerge the previous cases into this one using comma-separated label.(ë“ÉÔøÿÿÿÿ
+_
+java:S6208È"CMerge the previous cases into this one using comma-separated label.(Î‡…âùÿÿÿÿ
+_
+java:S6208İ"CMerge the previous cases into this one using comma-separated label.(Ç˜­Ìùÿÿÿÿ
+_
+java:S6208ë"CMerge the previous cases into this one using comma-separated label.(æ¥Ìûÿÿÿÿ
+_
+java:S6208ó"CMerge the previous cases into this one using comma-separated label.(®öõ„ıÿÿÿÿ
+_
+java:S6208"CMerge the previous cases into this one using comma-separated label.(¶ªÛ£ûÿÿÿÿ
+Z
+java:S6208œ"CMerge the previous cases into this one using comma-separated label.(Ñ´£ß
+_
+java:S6208¤"CMerge the previous cases into this one using comma-separated label.(¬Ï‘ãúÿÿÿÿ
+Y
+java:S6208¹"CMerge the previous cases into this one using comma-separated label.(ï°î[
+Z
+java:S6208Ç"CMerge the previous cases into this one using comma-separated label.(ÿ§­¢
+_
+java:S6208Ï"CMerge the previous cases into this one using comma-separated label.(òâÑ¶ùÿÿÿÿ
+Z
+java:S6208Ö"CMerge the previous cases into this one using comma-separated label.(‚´«ú
+_
+java:S6208Ï"CMerge the previous cases into this one using comma-separated label.(Ñ·úœÿÿÿÿÿ
+Z
+java:S6208ã"CMerge the previous cases into this one using comma-separated label.(“Ö‘Û
+_
+java:S6208ğ"CMerge the previous cases into this one using comma-separated label.(¥™Œˆúÿÿÿÿ
+Z
+java:S6208ö"CMerge the previous cases into this one using comma-separated label.(ìÎÚ
+_
+java:S6208‰	"CMerge the previous cases into this one using comma-separated label.(ƒ“·ˆûÿÿÿÿ
+Z
+java:S6208•	"CMerge the previous cases into this one using comma-separated label.(³áÃ
+Z
+java:S6208›	"CMerge the previous cases into this one using comma-separated label.(è“±Ñ
+_
+java:S6208¯	"CMerge the previous cases into this one using comma-separated label.(Õ›ŸŸúÿÿÿÿ
+Z
+java:S6208¼	"CMerge the previous cases into this one using comma-separated label.(ÍßÄ´
+Z
+java:S6208Â	"CMerge the previous cases into this one using comma-separated label.(¬Ï§ÿ
+_
+java:S6208Õ	"CMerge the previous cases into this one using comma-separated label.(¡‘·ıúÿÿÿÿ
+_
+java:S6208á	"CMerge the previous cases into this one using comma-separated label.(Õ’‚‡øÿÿÿÿ
+Z
+java:S6208ç	"CMerge the previous cases into this one using comma-separated label.(¬¶»§
+Z
+java:S6208Ä
+"CMerge the previous cases into this one using comma-separated label.(©—¢¾
+Z
+java:S6208È
+"CMerge the previous cases into this one using comma-separated label.(Ì™æç
+_
+java:S6208Ì
+"CMerge the previous cases into this one using comma-separated label.(‘ˆÁ´ıÿÿÿÿ
+Z
+java:S6208Ù
+"CMerge the previous cases into this one using comma-separated label.(Æÿ–…
+a
+java:S1192ş"KDefine a constant instead of duplicating this literal "image/jpeg" 3 times.(Ë®Ë]
+k
+java:S1192¤"TDefine a constant instead of duplicating this literal "dd/MM/yyyy HH:mm:ss" 4 times.(¿½ëÍ
+Q
+java:S1141—"5Extract this nested try block into a separate method.(¡»¢üùÿÿÿÿ
+l	java:S117‚"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Õ©Âüÿÿÿÿ
+l	java:S117ƒ"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(…¥¶íüÿÿÿÿ
+g	java:S117„"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‘ø´Ä
+g	java:S117…"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ßè€
+l	java:S117†"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(•íôèşÿÿÿÿ
+g	java:S117‡"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÖÁ§†
+8
+java:S1643Ë"Use a StringBuilder instead.(İí®¶ûÿÿÿÿ
+8
+java:S1643Í"Use a StringBuilder instead.(¯£¤üÿÿÿÿ
+8
+java:S1643÷	"Use a StringBuilder instead.(Ê—®ÿúÿÿÿÿ
+3
+java:S1643×"Use a StringBuilder instead.(Ä¥å¥
+w
+java:S1488‰"[Immediately return this expression instead of assigning it to the temporary variable "str".(ÕÏó„øÿÿÿÿ
+S
+java:S4973 "<Strings and Boxed types should be compared using "equals()".(•šıâ
+S
+java:S4973»"<Strings and Boxed types should be compared using "equals()".(•šıâ
+S
+java:S4973È"<Strings and Boxed types should be compared using "equals()".(•šıâ
+S
+java:S4973Õ"<Strings and Boxed types should be compared using "equals()".(•šıâ
+U
+java:S1118":Add a private constructor to hide the implicit public one.(Ÿºğ—ûÿÿÿÿ
+T
+java:S1155$">Use isEmpty() to check whether the collection is empty or not.(ú™İñ
+g
+java:S5998)"LRefactor this repetition that can lead to a stack overflow for large inputs.(šÆ¸ºıÿÿÿÿ
+j
+java:S6201"NReplace this instanceof check and cast with 'instanceof BigDecimal bigdecimal'( Éµ†şÿÿÿÿ
+j
+java:S6201 "NReplace this instanceof check and cast with 'instanceof BigInteger biginteger'(÷ùş‡ıÿÿÿÿ
+b
+java:S6201£"FReplace this instanceof check and cast with 'instanceof Double double'(÷ğ©ıÿÿÿÿ
+;
+java:S1168³"$Return an empty map instead of null.(¥¹ï
+n
+java:S3776Œ"RRefactor this method to reduce its Cognitive Complexity from 24 to the 15 allowed.(¾é–÷ÿÿÿÿÿ
+R	java:S125£"<This block of commented-out lines of code should be removed.(õ—‹
+W	java:S125­"<This block of commented-out lines of code should be removed.(›Øˆâşÿÿÿÿ
+R	java:S125º"<This block of commented-out lines of code should be removed.(¡¹‡¤
+R
+java:S1751Ê"6Remove this "return" statement or make it conditional.(•¤İ¥ûÿÿÿÿ
+W	java:S125Ğ"<This block of commented-out lines of code should be removed.(Îô‹êùÿÿÿÿ
+R	java:S125ã"<This block of commented-out lines of code should be removed.(ƒ§œ
+Y
+java:S6353î"CUse concise character class syntax '\\w' instead of '[A-Za-z0-9_]'.(Ô©˜z
+ƒ
+java:S1130ò"lRemove the declaration of thrown exception 'java.lang.Exception', as it cannot be thrown from method's body.(ÑÌÛ
+\
+java:S1124ò"EReorder the modifiers to comply with the Java Language Specification.(ÑÌÛ
+~
+java:S5854°"gUse the CANON_EQ flag with "Pattern.compile(pattern, CANON_EQ).matcher(input).replaceAll(replacement)".(ç¥¨
+G
+java:S6035°"0Replace this alternation with a character class.(ç¥¨
+~
+java:S5854±"gUse the CANON_EQ flag with "Pattern.compile(pattern, CANON_EQ).matcher(input).replaceAll(replacement)".(«µ¡ç
+G
+java:S6035±"0Replace this alternation with a character class.(«µ¡ç
+~
+java:S5854²"gUse the CANON_EQ flag with "Pattern.compile(pattern, CANON_EQ).matcher(input).replaceAll(replacement)".(Œïæ—
+G
+java:S6035²"0Replace this alternation with a character class.(Œïæ—
+ƒ
+java:S5854³"gUse the CANON_EQ flag with "Pattern.compile(pattern, CANON_EQ).matcher(input).replaceAll(replacement)".(Ğ‘ÀÓûÿÿÿÿ
+L
+java:S6035³"0Replace this alternation with a character class.(Ğ‘ÀÓûÿÿÿÿ
+~
+java:S5854´"gUse the CANON_EQ flag with "Pattern.compile(pattern, CANON_EQ).matcher(input).replaceAll(replacement)".(÷ä¼
+G
+java:S6035´"0Replace this alternation with a character class.(÷ä¼
+~
+java:S5854µ"gUse the CANON_EQ flag with "Pattern.compile(pattern, CANON_EQ).matcher(input).replaceAll(replacement)".(Îüº¯
+G
+java:S6035µ"0Replace this alternation with a character class.(Îüº¯
+_
+java:S5361¶"HReplace this call to "replaceAll()" by a call to the "replace()" method.(ıÔ¢—
+E
+java:S2140ö	")Use "java.util.Random.nextInt()" instead.(®ä…îüÿÿÿÿ
+_
+java:S5361’
+"HReplace this call to "replaceAll()" by a call to the "replace()" method.(Ï¾ŸÛ
+_
+java:S5361’
+"HReplace this call to "replaceAll()" by a call to the "replace()" method.(Ï¾ŸÛ
+i
+java:S6204¨
+"RReplace this usage of 'Stream.collect(Collectors.toList())' with 'Stream.toList()'(œçÖß
+n
+java:S3776«
+"RRefactor this method to reduce its Cognitive Complexity from 16 to the 15 allowed.(Ü˜ˆÎøÿÿÿÿ
+J
+java:S1874­
+"3Remove this use of "newInstance"; it is deprecated.(«ı¹ò
+H
+java:S3011´
+",This accessibility update should be removed.(Í”úÆùÿÿÿÿ
+H
+java:S3011¼
+",This accessibility bypass should be removed.(Æ”¥¶ùÿÿÿÿ
+H
+java:S3011À
+",This accessibility bypass should be removed.(›Œ® ıÿÿÿÿ
+C
+java:S3011Å
+",This accessibility bypass should be removed.(éüá²
+H
+java:S3011É
+",This accessibility bypass should be removed.(óë¥¡ıÿÿÿÿ
+C
+java:S3011Í
+",This accessibility bypass should be removed.( Ò
+C
+java:S3011Ğ
+",This accessibility bypass should be removed.(ã¤¨”
+C
+java:S3011Ó
+",This accessibility bypass should be removed.(è¯¡š
+H
+java:S3011Ö
+",This accessibility bypass should be removed.(¨´° ÿÿÿÿÿ
+C
+java:S3011Ú
+",This accessibility bypass should be removed.(åäÑô
+H
+java:S3011İ
+",This accessibility bypass should be removed.(æÖáÜûÿÿÿÿ
+H
+java:S3011à
+",This accessibility bypass should be removed.(˜÷¿şÿÿÿÿ
+h
+java:S6201ï
+"LReplace this instanceof check and cast with 'instanceof LocalDate localdate'(™ŞØ×ùÿÿÿÿ
+n
+java:S3776õ
+"RRefactor this method to reduce its Cognitive Complexity from 26 to the 15 allowed.(Ø˜èÀøÿÿÿÿ
+n
+java:S3776"RRefactor this method to reduce its Cognitive Complexity from 30 to the 15 allowed.(Ù›½¿üÿÿÿÿ
+i
+java:S6204³"RReplace this usage of 'Stream.collect(Collectors.toList())' with 'Stream.toList()'(œçÖß
+C
+java:S3011™",This accessibility update should be removed.(˜ÂÓ˜
+ƒ
+java:S1130¶"lRemove the declaration of thrown exception 'java.lang.Exception', as it cannot be thrown from method's body.(È”úÅ
+C
+java:S3011Ç",This accessibility update should be removed.(˜ÂÓ˜
+B
+java:S1144ò"+Remove this unused private "getKey" method.(ÑÌÛ
+I
+java:S1144Á"2Remove this unused private "getValueField" method.(ÄÕï·

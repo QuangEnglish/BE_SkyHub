@@ -1,0 +1,8 @@
+
+X
+java:S6813"BRemove this field injection and use constructor injection instead.(êæÄÞ
+V	java:S125L"<This block of commented-out lines of code should be removed.(ª·Ý‡þÿÿÿÿ
+V	java:S125N"<This block of commented-out lines of code should be removed.(Æƒµ‚úÿÿÿÿ
+Q	java:S125P"<This block of commented-out lines of code should be removed.(ß±¹Õ
+\
+java:S1128"ARemove this unused import 'org.springframework.data.domain.Page'.(˜âŽŽüÿÿÿÿ

@@ -1,0 +1,12 @@
+
+H
+java:S6126#"2Replace this String concatenation with Text block.(ƒ§¸´
+V	java:S125W"<This block of commented-out lines of code should be removed.(ÎµÁúÿÿÿÿ
+b
+java:S1858 "F"sql" is already a string, there's no need to call "toString()" on it.(üÎ¢‘ýÿÿÿÿ
+p
+java:S1128"URemove this unused import 'com.company_management.model.response.UserSearchResponse'.(¥ïêþþÿÿÿÿ
+n
+java:S1128"SRemove this unused import 'org.springframework.beans.factory.annotation.Autowired'.(¡ž¸Îùÿÿÿÿ
+G
+java:S1128"1Remove this unused import 'java.math.BigInteger'.(»Çâ€

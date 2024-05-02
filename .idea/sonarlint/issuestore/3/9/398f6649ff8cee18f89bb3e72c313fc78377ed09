@@ -1,0 +1,13 @@
+
+g	java:S1124"FDefine and throw a dedicated exception instead of using a generic one.(Ð³Üªÿÿÿÿÿ8ûÐðöß1
+a	java:S112V"FDefine and throw a dedicated exception instead of using a generic one.(úÐªP8üÐðöß1
+c	java:S112’"FDefine and throw a dedicated exception instead of using a generic one.(Ô‹‡š8üÐðöß1
+`
+java:S1854I">Remove this useless assignment to local variable "companyDTO".(´°œõúÿÿÿÿ8óñ„÷ß1
+X	java:S125A"<This block of commented-out lines of code should be removed.(’­¤î8ÉÑðöß1
+Q
+java:S1481I"/Remove this unused "companyDTO" local variable.(´°œõúÿÿÿÿ8Šò„÷ß1
+:
+java:S2119p"Save and re-use this "Random".(¼ÝÅf8ÔÑðöß1
+P
+java:S1135 "2Complete the task associated to this TODO comment.(ŸôìÀ8ÜÑðöß1

@@ -1,0 +1,60 @@
+
+[	java:S112*"FDefine and throw a dedicated exception instead of using a generic one.(­Ñ‹º
+a	java:S112Ş"FDefine and throw a dedicated exception instead of using a generic one.(«Æ“”ıÿÿÿÿ
+[	java:S112ß"FDefine and throw a dedicated exception instead of using a generic one.(¾ü¶H
+f
+java:S1192a"KDefine a constant instead of duplicating this literal "yyyy/MM/dd" 3 times.(–èÒÓüÿÿÿÿ
+k
+java:S1192Ğ"ODefine a constant instead of duplicating this literal "yyyyMMddHHmmss" 3 times.(µ²Ôáÿÿÿÿÿ
+p
+java:S1192İ"TDefine a constant instead of duplicating this literal "yyyy/MM/dd HH:mm:ss" 3 times.(½ÁËåıÿÿÿÿ
+p
+java:S1192ê"TDefine a constant instead of duplicating this literal "yyyy-MM-dd HH:mm:ss" 4 times.(ì¹Œûûÿÿÿÿ
+a
+java:S1192}"KDefine a constant instead of duplicating this literal "dd/MM/yyyy" 3 times.(ìÿõÈ
+c
+java:S1192M"HDefine a constant instead of duplicating this literal "MM/yyyy" 3 times.(”Úµ²ÿÿÿÿÿ
+g	java:S117×"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(®¸®©
+}
+java:S1488&"bImmediately return this expression instead of assigning it to the temporary variable "xmlGregCal".(À×æÀøÿÿÿÿ
+x
+java:S1488ˆ"\Immediately return this expression instead of assigning it to the temporary variable "date".(–èÒÓüÿÿÿÿ
+|
+java:S1488"`Immediately return this expression instead of assigning it to the temporary variable "dateTime".(É‘Çºûÿÿÿÿ
+w
+java:S1488˜"`Immediately return this expression instead of assigning it to the temporary variable "dateTime".(ÜÔä
+
+java:S1488°"hImmediately return this expression instead of assigning it to the temporary variable "dbUpdateDateTime".(¨çèù
+u
+java:S1488¹"^Immediately return this expression instead of assigning it to the temporary variable "yyyymm".(´Ö¦ß
+s
+java:S1488Á"\Immediately return this expression instead of assigning it to the temporary variable "mmdd".(øÕÛª
+|
+java:S1488Ú"`Immediately return this expression instead of assigning it to the temporary variable "stopTerm".(Õ Ãÿÿÿÿÿ
+x
+java:S1488"\Immediately return this expression instead of assigning it to the temporary variable "date".(ÎÌññüÿÿÿÿ
+˜
+java:S1186¶"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(Çµí‘
+ƒ
+java:S4144Ÿ"lUpdate this method so that its implementation is not identical to "date2yyyyMMddStringWithSlash" on line 95.(È¥ÚÀ
+V	java:S125"<This block of commented-out lines of code should be removed.(•°´Šûÿÿÿÿ
+‚
+java:S1130*"lRemove the declaration of thrown exception 'java.lang.Exception', as it cannot be thrown from method's body.(­Ñ‹º
+?	java:S108•")Either remove or fill this block of code.(Í½°†
+`
+java:S3252¹"DUse static access with "java.text.DateFormat" for "getTimeInstance".(‘¯ãŞúÿÿÿÿ
+W
+java:S3252¹";Use static access with "java.text.DateFormat" for "MEDIUM".(‘¯ãŞúÿÿÿÿ
+ˆ
+java:S1130Ş"lRemove the declaration of thrown exception 'java.lang.Exception', as it cannot be thrown from method's body.(«Æ“”ıÿÿÿÿ
+W	java:S125ƒ"<This block of commented-out lines of code should be removed.(Îô‹êùÿÿÿÿ
+ˆ
+java:S1130­"qRemove the declaration of thrown exception 'java.text.ParseException', as it cannot be thrown from method's body.(ÿï…Á
+R	java:S125¾"<This block of commented-out lines of code should be removed.(¡¹‡¤
+s
+java:S2737ì"WAdd logic to this catch clause or eliminate it and rethrow the exception automatically.(¤­—Îşÿÿÿÿ
+W	java:S125¹"<This block of commented-out lines of code should be removed.(Îô‹êùÿÿÿÿ
+n
+java:S3776¾"RRefactor this method to reduce its Cognitive Complexity from 23 to the 15 allowed.(Í Óüÿÿÿÿ
+R	java:S125ğ"<This block of commented-out lines of code should be removed.(õ—‹
+R	java:S125‹"<This block of commented-out lines of code should be removed.(¡¹‡¤
