@@ -156,6 +156,10 @@ public class AttendanceLeaveRepositoryImpl implements AttendanceLeaveRepositoryC
             sqlSelect.append("  and le.is_active = :isActive");
             map.put("isActive", searchLeaveRequest.getIsActive());
         }
+        if (!DataUtils.isNullOrEmpty(searchLeaveRequest.getEmployeeId())) {
+            sqlSelect.append("  and le.employee_id = :employeeId");
+            map.put("employeeId", searchLeaveRequest.getEmployeeId());
+        }
         return map;
     }
 

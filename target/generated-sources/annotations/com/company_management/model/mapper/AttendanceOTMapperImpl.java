@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-05-02T11:36:56+0700",
+    date = "2024-05-02T15:56:54+0700",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.8 (Oracle Corporation)"
 )
 @Component
@@ -23,7 +23,6 @@ public class AttendanceOTMapperImpl implements AttendanceOTMapper {
 
         AttendanceOt attendanceOt = new AttendanceOt();
 
-        attendanceOt.setId( dto.getId() );
         attendanceOt.setIsActive( dto.getIsActive() );
         attendanceOt.setStartDay( dto.getStartDay() );
         attendanceOt.setStartTime( dto.getStartTime() );
@@ -44,7 +43,6 @@ public class AttendanceOTMapperImpl implements AttendanceOTMapper {
 
         AttendanceOTDTO attendanceOTDTO = new AttendanceOTDTO();
 
-        attendanceOTDTO.setId( entity.getId() );
         attendanceOTDTO.setStartDay( entity.getStartDay() );
         attendanceOTDTO.setStartTime( entity.getStartTime() );
         attendanceOTDTO.setEndTime( entity.getEndTime() );
@@ -91,9 +89,6 @@ public class AttendanceOTMapperImpl implements AttendanceOTMapper {
             return;
         }
 
-        if ( dto.getId() != null ) {
-            entity.setId( dto.getId() );
-        }
         if ( dto.getIsActive() != null ) {
             entity.setIsActive( dto.getIsActive() );
         }
