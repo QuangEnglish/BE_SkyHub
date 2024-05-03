@@ -20,7 +20,9 @@ public class AttendanceLeaveDTO {
     private String employeeCode;
     private String employeeName;
     private Date startDay; // tu ngày
+    private String startDayConvert; // tu ngày
     private Date endDay;  //đến ngày
+    private String endDayConvert;  //đến ngày
     private String description; //Nội dung
     private Long totalTime;  //số giờ
     private Long trackerId; //người theo dõi
@@ -30,4 +32,5 @@ public class AttendanceLeaveDTO {
     private String reviewerCode;
     private String reviewerName;
     private Integer isActive;  // trạng thái đã duyệt, chờ duyệt, từ chối
+    private String isActiveName;  // trạng thái đã duyệt, chờ duyệt, từ chối
 }

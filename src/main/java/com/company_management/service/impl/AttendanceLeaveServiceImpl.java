@@ -104,7 +104,17 @@ public class AttendanceLeaveServiceImpl implements AttendanceLeaveService {
             AtomicInteger index = new AtomicInteger();
             for (AttendanceLeaveDTO item : attendanceLeaveDTOList) {
                 item.setIndex(index.incrementAndGet());
+                if (item.getIsActive() == 1) {
+                    item.setIsActiveName("Đã duyệt");
+                } else if(item.getIsActive() == 2) {
+                    item.setIsActiveName("Chờ duyệt");
+                }else{
+                    item.setIsActiveName("Từ chối");
+                }
+                item.setStartDayConvert(DateTimeUtils.convertDateTimeToString(item.getStartDay(), "dd/MM/yyyy"));
+                item.setEndDayConvert(DateTimeUtils.convertDateTimeToString(item.getEndDay(), "dd/MM/yyyy"));
             }
+
             Map<String, Object> beans = new HashMap<>();
             beans.put("posLst", attendanceLeaveDTOList);
             beans.put("date", DateTimeUtils.convertDateToStringByPattern(new Date(), "dd/MM/yyyy HH:mm:ss"));
