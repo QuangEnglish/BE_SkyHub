@@ -76,6 +76,35 @@ public class AttendanceLeaveServiceImpl implements AttendanceLeaveService {
             attendanceLeave = new AttendanceLeave();
             attendanceLeave = attendanceLeaveMapper.toEntity(attendanceLeaveDTO);
             attendanceLeave.setIsActive(2);
+            //gửi mail
+            UserCustom userCustom = userCustomRepository.findByUserDetailId(attendanceLeaveDTO.getReviewerId()).orElseThrow(
+                    () -> new AppException("ERR01", "Không tìm thấy tài khoản người phê duyệt!")
+            );
+            AttendanceLeaveDTO dto = attendanceLeaveMapper.toDto(attendanceLeave);
+            UserDetail userDetail = userDetailRepository.findById(attendanceLeave.getReviewerId()).orElseThrow(
+                    () -> new AppException("ERR01", "Không tìm thấy tài khoản người phê duyệt!")
+            );
+            UserDetail userDetail2 = userDetailRepository.findById(attendanceLeave.getTrackerId()).orElseThrow(
+                    () -> new AppException("ERR01", "Không tìm thấy tài khoản người theo dõi!")
+            );
+            UserDetail userDetail3 = userDetailRepository.findById(attendanceLeave.getEmployeeId()).orElseThrow(
+                    () -> new AppException("ERR01", "Không tìm thấy tài khoản người gửi đơn!")
+            );
+            dto.setReviewerName(userDetail.getEmployeeName());
+            dto.setTrackerName(userDetail2.getEmployeeName());
+            dto.setEmployeeName(userDetail3.getEmployeeName());
+            dto.setStartDayConvert(DateTimeUtils.convertDateTimeToString(dto.getStartDay(), "dd/MM/yyyy"));
+            dto.setEndDayConvert(DateTimeUtils.convertDateTimeToString(dto.getEndDay(), "dd/MM/yyyy"));
+            Map<String, Object> params = LogisticsMailUtils.sendMailToAttendanceLeave(dto);
+            Context context = new Context();
+            context.setVariables(params);
+            MailRequest mailRequest = MailRequest.builder()
+                    .toMail(userCustom.getEmail())
+                    .html(true)
+                    .title("Công ty cổ phần truyền thông và dịch vụ Nodo")
+                    .content(templateEngine.process(MailRequest.ATTENDANCE_LEAVE_PROVIDER_TEMPLATE, context))
+                    .build();
+            emailService.send(mailRequest);
         } else {
             attendanceLeave = attendanceLeaveRepository.findById(attendanceLeaveDTO.getLeaveID())
                     .orElseThrow(() -> new AppException("ERO01", "Đơn nghỉ phép không tồn tại"));
@@ -103,34 +132,6 @@ public class AttendanceLeaveServiceImpl implements AttendanceLeaveService {
             }
         }
         attendanceLeaveRepository.save(attendanceLeave);
-        UserCustom userCustom = userCustomRepository.findByUserDetailId(attendanceLeaveDTO.getReviewerId()).orElseThrow(
-                () -> new AppException("ERR01", "Không tìm thấy tài khoản người phê duyệt!")
-        );
-        AttendanceLeaveDTO dto = attendanceLeaveMapper.toDto(attendanceLeave);
-        UserDetail userDetail = userDetailRepository.findById(attendanceLeave.getReviewerId()).orElseThrow(
-                () -> new AppException("ERR01", "Không tìm thấy tài khoản người phê duyệt!")
-        );
-        UserDetail userDetail2 = userDetailRepository.findById(attendanceLeave.getTrackerId()).orElseThrow(
-                () -> new AppException("ERR01", "Không tìm thấy tài khoản người theo dõi!")
-        );
-        UserDetail userDetail3 = userDetailRepository.findById(attendanceLeave.getEmployeeId()).orElseThrow(
-                () -> new AppException("ERR01", "Không tìm thấy tài khoản người gửi đơn!")
-        );
-        dto.setReviewerName(userDetail.getEmployeeName());
-        dto.setTrackerName(userDetail2.getEmployeeName());
-        dto.setEmployeeName(userDetail3.getEmployeeName());
-        dto.setStartDayConvert(DateTimeUtils.convertDateTimeToString(dto.getStartDay(), "dd/MM/yyyy"));
-        dto.setEndDayConvert(DateTimeUtils.convertDateTimeToString(dto.getEndDay(), "dd/MM/yyyy"));
-        Map<String, Object> params = LogisticsMailUtils.sendMailToAttendanceLeave(dto);
-        Context context = new Context();
-        context.setVariables(params);
-        MailRequest mailRequest = MailRequest.builder()
-                .toMail(userCustom.getEmail())
-                .html(true)
-                .title("Công ty cổ phần truyền thông và dịch vụ Nodo")
-                .content(templateEngine.process(MailRequest.ATTENDANCE_LEAVE_PROVIDER_TEMPLATE, context))
-                .build();
-        emailService.send(mailRequest);
     }
 
     @Override

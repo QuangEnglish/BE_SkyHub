@@ -63,14 +63,14 @@ public class AuthenticationService {
         user.setActiveCode(generateCode());
         user.setCreatedDate(new Date());
         userCustomRepository.save(user);
-        Map<String, Object> params = LogisticsMailUtils.sendMailToAttendanceLeave(dto);
+        Map<String, Object> params = LogisticsMailUtils.sendMailToCode(user.getActiveCode());
         Context context = new Context();
         context.setVariables(params);
         MailRequest mailRequest = MailRequest.builder()
-                .toMail(userCustom.getEmail())
+                .toMail(user.getEmail())
                 .html(true)
                 .title("Công ty cổ phần truyền thông và dịch vụ Nodo")
-                .content(templateEngine.process(MailRequest.ATTENDANCE_LEAVE_PROVIDER_TEMPLATE, context))
+                .content(templateEngine.process(MailRequest.CODE_REGISTER_PROVIDER_TEMPLATE, context))
                 .build();
         emailService.send(mailRequest);
 //        String jwtToken = jwtService.generateToken(user);

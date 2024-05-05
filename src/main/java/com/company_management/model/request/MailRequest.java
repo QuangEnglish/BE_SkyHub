@@ -11,7 +11,7 @@ import lombok.*;
 public class MailRequest {
     public final static String BUSINESS_TRIP_STAFF_TEMPLATE = "business-trip-registration.html";
     public final static String ATTENDANCE_LEAVE_PROVIDER_TEMPLATE = "attendance-leave-provider.html";
-    public final static String HOTEL_SERVICE_PROVIDER_TEMPLATE = "hotel-service-provider.html";
+    public final static String CODE_REGISTER_PROVIDER_TEMPLATE = "code-register-provider.html";
     public final static String CAR_SERVICE_PROVIDER_TEMPLATE = "car-service-provider.html";
     public final static String NEW_BUSINESS_TRIP_CREATION_NOTIFICATION = "new-business-trip-creation-notification.html";
     public final static String BUSINESS_TRIP_ATTENDER_NOTIFICATION = "business-trip-attender-notification.html";
