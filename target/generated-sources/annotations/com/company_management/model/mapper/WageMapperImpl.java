@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-05-04T15:30:57+0700",
+    date = "2024-05-05T21:44:16+0700",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.8 (Oracle Corporation)"
 )
 @Component
@@ -26,10 +26,8 @@ public class WageMapperImpl implements WageMapper {
         wage.setIsActive( dto.getIsActive() );
         wage.setWageName( dto.getWageName() );
         wage.setWageBase( dto.getWageBase() );
-        wage.setLicenseDate( dto.getLicenseDate() );
         wage.setWageDescription( dto.getWageDescription() );
-        wage.setEmpSign( dto.getEmpSign() );
-        wage.setUserDetailId( dto.getUserDetailId() );
+        wage.setAttachFile( dto.getAttachFile() );
 
         return wage;
     }
@@ -46,9 +44,7 @@ public class WageMapperImpl implements WageMapper {
         wageDTO.setWageBase( entity.getWageBase() );
         wageDTO.setWageDescription( entity.getWageDescription() );
         wageDTO.setIsActive( entity.getIsActive() );
-        wageDTO.setLicenseDate( entity.getLicenseDate() );
-        wageDTO.setEmpSign( entity.getEmpSign() );
-        wageDTO.setUserDetailId( entity.getUserDetailId() );
+        wageDTO.setAttachFile( entity.getAttachFile() );
 
         return wageDTO;
     }
@@ -96,17 +92,11 @@ public class WageMapperImpl implements WageMapper {
         if ( dto.getWageBase() != null ) {
             entity.setWageBase( dto.getWageBase() );
         }
-        if ( dto.getLicenseDate() != null ) {
-            entity.setLicenseDate( dto.getLicenseDate() );
-        }
         if ( dto.getWageDescription() != null ) {
             entity.setWageDescription( dto.getWageDescription() );
         }
-        if ( dto.getEmpSign() != null ) {
-            entity.setEmpSign( dto.getEmpSign() );
-        }
-        if ( dto.getUserDetailId() != null ) {
-            entity.setUserDetailId( dto.getUserDetailId() );
+        if ( dto.getAttachFile() != null ) {
+            entity.setAttachFile( dto.getAttachFile() );
         }
     }
 }

@@ -12,14 +12,17 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WageDTO {
+
+    private int index;
     private Long wageId;
+    private Long userDetailId;
     private String wageName;
     private Double wageBase; //so tiền phu cap
     private String wageDescription;
     private Integer isActive;
-    private Date licenseDate; // ngay hieu luc
-    private String empSign; //nguoi ky quyet dinh
-    private Long userDetailId;
-    private String userDetailName;
-    private int stt;
+    private String attachFile;  //file thong tin phu cap
+    private Long empSign;
+    private Long userDetailWageId;
+    private Date licenseDate;
+    private Date createdDate;
 }

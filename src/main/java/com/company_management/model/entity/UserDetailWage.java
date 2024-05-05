@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -19,6 +21,10 @@ public class UserDetailWage extends EntBase{
     @Column(name = "USER_DETAIL_ID")
     private Long userDetailId;
     @Column(name = "WAGE_ID")
-    private Long contractId;  //mã phụ cấp
+    private Long wageId;  //mã phụ cấp
+    @Column(name = "LICENSE_DATE")
+    private Date licenseDate; // ngay hieu luc
+    @Column(name = "EMP_SIGN")
+    private String empSign; //nguoi ky quyet dinh
 
 }

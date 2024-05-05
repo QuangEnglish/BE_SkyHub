@@ -1,15 +1,25 @@
 package com.company_management.service;
 
+import com.company_management.model.dto.UserDetailWageDTO;
 import com.company_management.model.dto.WageDTO;
-import com.company_management.model.response.BasicResponse;
-import com.company_management.model.response.PageResponse;
+import com.company_management.model.response.DataPage;
+import com.company_management.model.response.WageResponse;
 import org.springframework.data.domain.Pageable;
-
-import java.io.ByteArrayInputStream;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface WageService {
-    PageResponse<WageDTO> getAllWage(WageDTO wageDTO, Pageable pageable);
-    BasicResponse addNewWage (WageDTO wageDTO);
-    ByteArrayInputStream exportExcel(WageDTO wageDTO) throws Exception;
-    void deleteWage (Long id);
+    DataPage<WageDTO> searchForEmployee(WageDTO wageDTO, Pageable pageable);
+    DataPage<WageDTO> search(WageDTO wageDTO, Pageable pageable);
+
+    WageResponse detail(Long id);
+
+    void update(MultipartFile file, WageDTO wageDTO);
+    void updateForEmployee(UserDetailWageDTO userDetailWageDTO);
+
+    void add(MultipartFile file, WageDTO contractDTO);
+    void addForEmployee(UserDetailWageDTO userDetailWageDTO);
+
+    void deleteByIds(Long id);
+    void deleteForEmployeeByIds(Long id);
+
 }

@@ -16,6 +16,7 @@ com\company_management\common\Const$JOB_SCHEDULE_CONFIG_STATUS.class
 com\company_management\model\entity\Qualification.class
 com\company_management\repository\CustomBaseRepository.class
 com\company_management\model\mapper\DepartmentMapperImpl.class
+com\company_management\model\response\WageResponse$WageResponseBuilder.class
 com\company_management\repository\impl\AttendanceRepositoryImpl.class
 com\company_management\common\Const$SUBSCRIBER_BLOCK_TYPE.class
 com\company_management\service\SocialInsuranceService.class
@@ -46,7 +47,6 @@ com\company_management\common\Const$PATTERN.class
 com\company_management\model\dto\PermissionDTO.class
 com\company_management\repository\PositionRepository.class
 com\company_management\service\impl\UserServiceImpl.class
-com\company_management\service\impl\WageServiceImpl.class
 com\company_management\common\Const$ORDER_ACTION_TYPE.class
 com\company_management\model\entity\UserDetailWage.class
 com\company_management\model\request\MailRequest$MailRequestBuilder.class
@@ -85,6 +85,7 @@ com\company_management\repository\AttendanceRepositoryCustom.class
 com\company_management\model\mapper\WageMapper.class
 com\company_management\common\Const$DASHBOARD_PRODUCT_TYPE.class
 com\company_management\common\Const$DEVICE_TYPE.class
+com\company_management\model\response\WageResponse.class
 com\company_management\model\mapper\SocialInsuranceMapper.class
 com\company_management\controller\HRM\UserController.class
 com\company_management\common\Const$PROCESS_STATUS.class
@@ -227,6 +228,7 @@ com\company_management\common\ResultResp$BodyData.class
 com\company_management\exception\ErrorMessage.class
 com\company_management\service\impl\DepartmentServiceImpl.class
 com\company_management\common\Const$SALE_TRANS_DETAIL_STATUS.class
+com\company_management\controller\HRM\WageController.class
 com\company_management\common\Const$PARTNER_TYPE.class
 com\company_management\common\enums\ContractType.class
 com\company_management\utils\annotation\StrongPassword.class
@@ -252,7 +254,6 @@ com\company_management\common\Const$ALOW_REUSER.class
 com\company_management\exception\AppException.class
 com\company_management\model\entity\SocialInsurance.class
 com\company_management\model\mapper\SocialInsuranceMapperImpl.class
-com\company_management\controller\WageController.class
 com\company_management\model\request\UserCustomEmployeeRequest.class
 com\company_management\controller\HRM\SocialInsuranceController.class
 com\company_management\common\Const$OBJECT_UPLOAD_TYPE.class
@@ -280,11 +281,13 @@ com\company_management\model\mapper\RoleMapper.class
 com\company_management\model\mapper\EntityMapper.class
 com\company_management\common\Const$BLOCK_OPEN_TYPE.class
 com\company_management\model\mapper\PositionMapperImpl.class
+com\company_management\model\dto\UserDetailWageDTO$UserDetailWageDTOBuilder.class
 com\company_management\common\Const$PRODUCT_GROUP_ID.class
 com\company_management\common\Const$PROUDUCT_GROUP.class
 com\company_management\service\ContractService.class
 com\company_management\common\Const$STATUS_EDU.class
 com\company_management\service\impl\RoleServiceImpl.class
+com\company_management\model\dto\UserDetailWageDTO.class
 com\company_management\model\request\ChangePasswordRequest.class
 com\company_management\repository\impl\CustomBaseRepositoryImpl.class
 com\company_management\utils\annotation\PasswordMatching$List.class
@@ -306,7 +309,6 @@ com\company_management\model\mapper\AttendanceLeaveMapperImpl.class
 com\company_management\model\dto\MenuItemDTO.class
 com\company_management\model\dto\RoleDTO.class
 com\company_management\model\entity\Department.class
-com\company_management\repository\impl\WageCustomRepositoryImpl.class
 com\company_management\model\entity\EntBase.class
 com\company_management\model\response\ContractResponse.class
 com\company_management\common\Const$SEND_EMAIL_CODE_CONFIG.class

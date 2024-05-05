@@ -82,7 +82,6 @@ public class UserServiceImpl implements UserService {
         socialInsurance.setUserDetailId(userDetail.getId());
         socialInsuranceRepository.save(socialInsurance);
         Wage wage = wageMapper.toEntity(request.getWage());
-        wage.setUserDetailId(userDetail.getId());
         wageRepository.save(wage);
 
         userDetailRepository.save(userDetail);

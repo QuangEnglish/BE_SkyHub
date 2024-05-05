@@ -4,6 +4,7 @@ D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\utils\DataUtil
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\model\request\UserCustomEmployeeRequest.java
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\model\entity\Wage.java
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\model\entity\Role.java
+D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\model\response\WageResponse.java
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\model\response\ContractResponse.java
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\repository\PositionRepositoryCustom.java
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\model\mapper\EmployeeMapper.java
@@ -13,7 +14,6 @@ D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\service\impl\E
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\model\request\RegisterRequest.java
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\model\entity\AttendanceLeave.java
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\service\RoleService.java
-D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\service\impl\WageServiceImpl.java
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\model\dto\MenuItemDTO.java
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\repository\AttendanceOTRepositoryCustom.java
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\exception\BadRequestException.java
@@ -33,7 +33,6 @@ D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\repository\Use
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\service\impl\AttendanceLeaveServiceImpl.java
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\service\UserService.java
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\controller\HRM\ContractController.java
-D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\controller\WageController.java
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\model\mapper\EntityMapper.java
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\model\request\SearchLeaveRequest.java
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\model\dto\PositionDTO.java
@@ -51,6 +50,7 @@ D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\service\MenuIt
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\repository\AttendanceOTRepository.java
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\service\EmailService.java
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\model\response\AccountSearchResponse.java
+D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\model\dto\UserDetailWageDTO.java
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\controller\quanlychamcong\AttendanceLeaveController.java
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\model\response\ValidationResponse.java
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\repository\ContractCustomRepository.java
@@ -102,6 +102,7 @@ D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\model\request\
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\controller\HRM\EmployeeController.java
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\filter\JwtAuthenticantionFilter.java
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\controller\auth\AuthenticationController.java
+D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\controller\HRM\WageController.java
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\repository\AttendanceRepository.java
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\model\dto\DepartmentDTO.java
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\repository\impl\PositionRepositoryImpl.java
@@ -178,7 +179,6 @@ D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\service\Authen
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\service\QualificationService.java
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\repository\SocialInsuranceRepository.java
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\model\entity\EntBase.java
-D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\repository\impl\WageCustomRepositoryImpl.java
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\model\entity\MenuItem.java
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\model\request\SearchDepartmentRequest.java
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\model\mapper\ContractMapper.java
