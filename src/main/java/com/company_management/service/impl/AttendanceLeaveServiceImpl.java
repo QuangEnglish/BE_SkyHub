@@ -3,14 +3,21 @@ package com.company_management.service.impl;
 import com.company_management.exception.AppException;
 import com.company_management.model.dto.AttendanceLeaveDTO;
 import com.company_management.model.entity.AttendanceLeave;
+import com.company_management.model.entity.UserCustom;
+import com.company_management.model.entity.UserDetail;
 import com.company_management.model.mapper.AttendanceLeaveMapper;
+import com.company_management.model.request.MailRequest;
 import com.company_management.model.request.SearchLeaveRequest;
 import com.company_management.model.response.DataPage;
 import com.company_management.repository.AttendanceLeaveRepository;
+import com.company_management.repository.UserCustomRepository;
+import com.company_management.repository.UserDetailRepository;
 import com.company_management.service.AttendanceLeaveService;
+import com.company_management.service.EmailService;
 import com.company_management.utils.CommonUtils;
 import com.company_management.utils.DataUtils;
 import com.company_management.utils.DateTimeUtils;
+import com.company_management.utils.LogisticsMailUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jxls.transformer.XLSTransformer;
@@ -18,6 +25,8 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.thymeleaf.ITemplateEngine;
+import org.thymeleaf.context.Context;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -35,7 +44,16 @@ public class AttendanceLeaveServiceImpl implements AttendanceLeaveService {
 
     private final AttendanceLeaveRepository attendanceLeaveRepository;
 
+    private final UserCustomRepository userCustomRepository;
+
     private final AttendanceLeaveMapper attendanceLeaveMapper;
+
+    private final UserDetailRepository userDetailRepository;
+
+    private final EmailService emailService;
+
+    private final ITemplateEngine templateEngine;
+
     @Override
     public DataPage<AttendanceLeaveDTO> search(SearchLeaveRequest searchLeaveRequest, Pageable pageable) {
         return attendanceLeaveRepository.search(searchLeaveRequest, pageable);
@@ -85,6 +103,34 @@ public class AttendanceLeaveServiceImpl implements AttendanceLeaveService {
             }
         }
         attendanceLeaveRepository.save(attendanceLeave);
+        UserCustom userCustom = userCustomRepository.findByUserDetailId(attendanceLeaveDTO.getReviewerId()).orElseThrow(
+                () -> new AppException("ERR01", "Không tìm thấy tài khoản người phê duyệt!")
+        );
+        AttendanceLeaveDTO dto = attendanceLeaveMapper.toDto(attendanceLeave);
+        UserDetail userDetail = userDetailRepository.findById(attendanceLeave.getReviewerId()).orElseThrow(
+                () -> new AppException("ERR01", "Không tìm thấy tài khoản người phê duyệt!")
+        );
+        UserDetail userDetail2 = userDetailRepository.findById(attendanceLeave.getTrackerId()).orElseThrow(
+                () -> new AppException("ERR01", "Không tìm thấy tài khoản người theo dõi!")
+        );
+        UserDetail userDetail3 = userDetailRepository.findById(attendanceLeave.getEmployeeId()).orElseThrow(
+                () -> new AppException("ERR01", "Không tìm thấy tài khoản người gửi đơn!")
+        );
+        dto.setReviewerName(userDetail.getEmployeeName());
+        dto.setTrackerName(userDetail2.getEmployeeName());
+        dto.setEmployeeName(userDetail3.getEmployeeName());
+        dto.setStartDayConvert(DateTimeUtils.convertDateTimeToString(dto.getStartDay(), "dd/MM/yyyy"));
+        dto.setEndDayConvert(DateTimeUtils.convertDateTimeToString(dto.getEndDay(), "dd/MM/yyyy"));
+        Map<String, Object> params = LogisticsMailUtils.sendMailToAttendanceLeave(dto);
+        Context context = new Context();
+        context.setVariables(params);
+        MailRequest mailRequest = MailRequest.builder()
+                .toMail(userCustom.getEmail())
+                .html(true)
+                .title("Công ty cổ phần truyền thông và dịch vụ Nodo")
+                .content(templateEngine.process(MailRequest.ATTENDANCE_LEAVE_PROVIDER_TEMPLATE, context))
+                .build();
+        emailService.send(mailRequest);
     }
 
     @Override

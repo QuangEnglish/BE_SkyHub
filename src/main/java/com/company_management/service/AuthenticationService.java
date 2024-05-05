@@ -9,12 +9,14 @@ import com.company_management.model.entity.UserCustom;
 import com.company_management.model.mapper.RoleMapper;
 import com.company_management.model.request.AuthenticationRequest;
 import com.company_management.model.request.ChangePasswordRequest;
+import com.company_management.model.request.MailRequest;
 import com.company_management.model.request.RegisterRequest;
 import com.company_management.model.response.AuthenticationResponse;
 import com.company_management.model.response.BasicResponse;
 import com.company_management.repository.RoleRepository;
 import com.company_management.repository.UserCustomRepository;
 import com.company_management.repository.UserDetailRepository;
+import com.company_management.utils.LogisticsMailUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,12 +24,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.thymeleaf.ITemplateEngine;
+import org.thymeleaf.context.Context;
 
 import java.security.Principal;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,13 +42,15 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final RoleMapper roleMapper;
     private final UserDetailRepository userDetailRepository;
+    private final EmailService emailService;
+    private final ITemplateEngine templateEngine;
 
     @Transactional
-    public AuthenticationResponse register(RegisterRequest request){
+    public void register(RegisterRequest request){
         UserCustom user = new UserCustom();
         Role role = roleRepository.findByRoleName(Constants.ROLE.ADMIN).orElseThrow(() -> new AppException("ERR01", "Không tìm thấy Quyền cho Tài khoản"));
         if(userCustomRepository.findByEmail(request.getEmail()).isPresent()){
-            throw new AppException("ERR01", "Email đã tồn tại!!!");
+            throw new AppException("ERR01", "Email đã tồn tại!");
         }
         Set<Role> roleSet = new HashSet<>();
         roleSet.add(role);
@@ -59,17 +62,24 @@ public class AuthenticationService {
         user.setActive(Constants.STATUS_ACTIVE_INT);
         user.setActiveCode(generateCode());
         user.setCreatedDate(new Date());
-//        UserDetail userDetail = new UserDetail();
-//        userDetail = userDetailRepository.save(userDetail);
-//        user.setUserDetailId(userDetail.getId());
         userCustomRepository.save(user);
-        String jwtToken = jwtService.generateToken(user);
-        AuthenticationResponse response = new AuthenticationResponse();
-        response.setUsername(user.getUser());
-        response.setToken(jwtToken);
-        Set<RoleDTO> roleDTOS = user.getRoles().stream().map(roleMapper::toDto).collect(Collectors.toSet());
-        response.setRoles(roleDTOS);
-        return response;
+        Map<String, Object> params = LogisticsMailUtils.sendMailToAttendanceLeave(dto);
+        Context context = new Context();
+        context.setVariables(params);
+        MailRequest mailRequest = MailRequest.builder()
+                .toMail(userCustom.getEmail())
+                .html(true)
+                .title("Công ty cổ phần truyền thông và dịch vụ Nodo")
+                .content(templateEngine.process(MailRequest.ATTENDANCE_LEAVE_PROVIDER_TEMPLATE, context))
+                .build();
+        emailService.send(mailRequest);
+//        String jwtToken = jwtService.generateToken(user);
+//        AuthenticationResponse response = new AuthenticationResponse();
+//        response.setUsername(user.getUser());
+//        response.setToken(jwtToken);
+//        Set<RoleDTO> roleDTOS = user.getRoles().stream().map(roleMapper::toDto).collect(Collectors.toSet());
+//        response.setRoles(roleDTOS);
+//        return response;
     }
     public AuthenticationResponse authenticate(AuthenticationRequest request){
         UserCustom user =

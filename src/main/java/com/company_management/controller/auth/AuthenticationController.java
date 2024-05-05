@@ -1,5 +1,7 @@
 package com.company_management.controller.auth;
 
+import com.company_management.common.ErrorCode;
+import com.company_management.common.ResultResp;
 import com.company_management.model.request.AuthenticationRequest;
 import com.company_management.model.request.ChangePasswordRequest;
 import com.company_management.model.request.RegisterRequest;
@@ -20,8 +22,9 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request){
-        return new ResponseEntity<>(authenticationService.register(request), HttpStatus.OK);
+    public ResultResp<Object> register(@RequestBody RegisterRequest request){
+        authenticationService.register(request);
+        return ResultResp.success(ErrorCode.CREATED_OK);
     }
 
     @PostMapping("/login")

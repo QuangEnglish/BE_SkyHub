@@ -49,6 +49,7 @@ com\company_management\service\impl\UserServiceImpl.class
 com\company_management\service\impl\WageServiceImpl.class
 com\company_management\common\Const$ORDER_ACTION_TYPE.class
 com\company_management\model\entity\UserDetailWage.class
+com\company_management\model\request\MailRequest$MailRequestBuilder.class
 com\company_management\common\Const$PATTERN$COUNTRY_CODE.class
 com\company_management\common\Const$PATTERN$SALE_FORM.class
 com\company_management\common\Const$STATUS.class
@@ -153,6 +154,7 @@ com\company_management\common\Const$MCU_ACCOUNT_TYPE.class
 com\company_management\common\Const$REVENUE_PLAN_STATUS.class
 com\company_management\service\AttendanceOTService.class
 com\company_management\service\AttendanceService.class
+com\company_management\service\impl\EmailServiceImpl.class
 com\company_management\model\entity\UserDetailContract.class
 com\company_management\model\dto\DepartmentDTO.class
 com\company_management\common\Const$PRODUCT_PACKAGE_TYPE.class
@@ -174,6 +176,7 @@ com\company_management\common\Const$1.class
 com\company_management\common\Const$CMS_MEDICAL_CODE.class
 com\company_management\exception\ExceptionHandlerAdvice.class
 com\company_management\service\QualificationService.class
+com\company_management\utils\LogisticsMailUtils.class
 com\company_management\model\mapper\AttendanceLeaveMapper.class
 com\company_management\common\Const$PROVISION_CODE_LIST.class
 com\company_management\model\entity\Task.class
@@ -233,6 +236,7 @@ com\company_management\model\request\SearchAttendanceOTRequest.class
 com\company_management\repository\ContractCustomRepository.class
 com\company_management\service\WageService.class
 com\company_management\utils\CommonUtils.class
+com\company_management\model\request\MailRequest.class
 com\company_management\filter\JwtAuthenticantionFilter.class
 com\company_management\service\impl\SocialInsuranceServiceImpl.class
 com\company_management\model\entity\Project.class
@@ -319,6 +323,7 @@ com\company_management\repository\SocialInsuranceRepository.class
 com\company_management\common\Const$SALE_CHANNEL_TYPE_PO.class
 com\company_management\service\RoleService.class
 com\company_management\common\Const$SALE_CHANNEL_TYPE.class
+com\company_management\service\EmailService.class
 com\company_management\common\Const$NOTICE_CHARGE_METHOD.class
 com\company_management\common\Const$SEND_SMS_CODE_CONFIG.class
 com\company_management\common\Const$SUBSCRIBER_STATUS.class

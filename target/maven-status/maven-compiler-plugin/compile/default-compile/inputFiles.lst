@@ -45,9 +45,11 @@ D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\model\response
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\model\request\AuthenticationRequest.java
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\model\response\AccountDetailResponse.java
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\model\response\AttendanceResponse.java
+D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\service\impl\EmailServiceImpl.java
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\repository\impl\EmployeeRepositoryImpl.java
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\service\MenuItemService.java
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\repository\AttendanceOTRepository.java
+D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\service\EmailService.java
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\model\response\AccountSearchResponse.java
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\controller\quanlychamcong\AttendanceLeaveController.java
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\model\response\ValidationResponse.java
@@ -67,6 +69,7 @@ D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\exception\Erro
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\exception\AppException.java
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\repository\WageRepository.java
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\model\entity\TaskAssignment.java
+D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\model\request\MailRequest.java
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\utils\validator\PasswordMatchingValidator.java
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\model\mapper\WageMapper.java
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\config\ApplicationConfig.java
@@ -133,6 +136,7 @@ D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\service\impl\D
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\model\entity\Task.java
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\config\SecurityConfig.java
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\controller\HRM\DepartmentController.java
+D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\utils\LogisticsMailUtils.java
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\model\dto\SocialInsuranceDTO.java
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\controller\quanlychamcong\AttendanceController.java
 D:\Admin\Ky8\Do_an\BE_SkyHub\src\main\java\com\company_management\service\ContractService.java
