@@ -47,6 +47,7 @@ com\company_management\common\Const$PATTERN.class
 com\company_management\model\dto\PermissionDTO.class
 com\company_management\repository\PositionRepository.class
 com\company_management\service\impl\UserServiceImpl.class
+com\company_management\service\impl\WageServiceImpl.class
 com\company_management\common\Const$ORDER_ACTION_TYPE.class
 com\company_management\model\entity\UserDetailWage.class
 com\company_management\model\request\MailRequest$MailRequestBuilder.class
@@ -85,6 +86,7 @@ com\company_management\repository\AttendanceRepositoryCustom.class
 com\company_management\model\mapper\WageMapper.class
 com\company_management\common\Const$DASHBOARD_PRODUCT_TYPE.class
 com\company_management\common\Const$DEVICE_TYPE.class
+com\company_management\repository\UserDetailWageRepository.class
 com\company_management\model\response\WageResponse.class
 com\company_management\model\mapper\SocialInsuranceMapper.class
 com\company_management\controller\HRM\UserController.class
@@ -277,6 +279,7 @@ com\company_management\repository\impl\ContractRepositoryImpl.class
 com\company_management\common\Const$UNLIMITED_TYPE.class
 com\company_management\model\response\DataPage.class
 com\company_management\model\dto\UserDetailContractDTO$UserDetailContractDTOBuilder.class
+com\company_management\repository\WageRepositoryCustom.class
 com\company_management\model\mapper\RoleMapper.class
 com\company_management\model\mapper\EntityMapper.class
 com\company_management\common\Const$BLOCK_OPEN_TYPE.class
@@ -345,6 +348,7 @@ com\company_management\common\ObjectError.class
 com\company_management\common\MsgCode.class
 com\company_management\repository\UserDetailContractRepository.class
 com\company_management\common\Const$COMPARE_TIME_TYPE.class
+com\company_management\repository\impl\WageRepositoryImpl.class
 com\company_management\common\Const$INVOICE_REVENUE_TYPE.class
 com\company_management\common\Const$ORDER_TYPE.class
 com\company_management\common\Const$BUSINESS_UNIT.class

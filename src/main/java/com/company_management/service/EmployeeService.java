@@ -23,5 +23,5 @@ public interface EmployeeService {
 
     ByteArrayInputStream exportExcel(SearchEmployeeRequest searchEmployeeRequest, Pageable pageable);
 
-
+    void updateEmployeeStatus();
 }

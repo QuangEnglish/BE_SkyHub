@@ -70,7 +70,7 @@ public class CommonUtils {
      */
     public static Long getUserLoginName() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        log.info("Mã id nhân viên //"+((UserCustom) authentication.getPrincipal()).getId());
+        log.info("Mã id tài khoản //"+((UserCustom) authentication.getPrincipal()).getId());
         return ((UserCustom) authentication.getPrincipal()).getId();
     }
 

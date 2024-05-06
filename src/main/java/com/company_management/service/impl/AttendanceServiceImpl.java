@@ -9,6 +9,7 @@ import com.company_management.model.response.AttendanceResponse;
 import com.company_management.model.response.DataPage;
 import com.company_management.repository.AttendanceRepository;
 import com.company_management.repository.UserCustomRepository;
+import com.company_management.repository.UserDetailRepository;
 import com.company_management.service.AttendanceService;
 import com.company_management.utils.CommonUtils;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,8 @@ public class AttendanceServiceImpl implements AttendanceService {
 
     private final UserCustomRepository userCustomRepository;
 
+    private final UserDetailRepository userDetailRepository;
+
     @Override
     @Transactional(readOnly = true)
     public DataPage<AttendanceResponse> search(SearchAttendanceRequest searchAttendanceRequest, Pageable pageable) {
@@ -40,6 +43,7 @@ public class AttendanceServiceImpl implements AttendanceService {
     }
 
     @Override
+    @Transactional
     public void createOrUpdate(AttendanceDTO attendanceDTO) {
         Attendance attendance;
         if (attendanceDTO.getId() == null) {
@@ -64,6 +68,9 @@ public class AttendanceServiceImpl implements AttendanceService {
                 attendance.setTotalPenalty(diffInMinutes);
             } else {
                 attendance.setTotalPenalty(0L);
+            }
+            if(userDetailRepository.updateIsActiveById(userCustom.getUserDetailId(), CommonUtils.getUserLoginName()) <= 0){
+                throw new AppException("ERR01", "Không tìm thấy nhân viên này!");
             }
         } else {
             attendance = attendanceRepository.findById(attendanceDTO.getId())

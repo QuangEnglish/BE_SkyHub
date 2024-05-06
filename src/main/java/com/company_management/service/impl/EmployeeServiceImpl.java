@@ -77,7 +77,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                 "         LEFT JOIN department de ON ud.department_id = de.id\n" +
                 "         LEFT JOIN position po ON ud.position_id = po.id\n" +
                 "WHERE 1 = 1\n" +
-                "AND ud.is_active = 1 ");
+                "AND ud.is_active = 1 or ud.is_active = 2 ");
         if (!DataUtils.isNullOrEmpty(searchEmployeeRequest.getEmployeeCode())) {
             sql.append(" AND ud.employee_code LIKE CONCAT('%', :employeeCode, '%') ");
             params.put("employeeCode", CommonUtils.getLikeCondition(searchEmployeeRequest.getEmployeeCode()));
@@ -306,6 +306,16 @@ public class EmployeeServiceImpl implements EmployeeService {
             log.error(ex.getMessage(), ex);
             throw new AppException("ERR01", "Xuất file excel bị lỗi");
         }
+    }
+
+    @Override
+    @Transactional
+    public void updateEmployeeStatus() {
+        List<UserDetail> employees = employeeRepository.findAll();
+        for (UserDetail employee : employees) {
+            employee.setIsActive(1);
+        }
+        employeeRepository.saveAll(employees);
     }
 
     private Map.Entry<StringBuilder, Map<String, Object>> getSqlExcel(SearchEmployeeRequest searchEmployeeRequest) {
