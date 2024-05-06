@@ -18,8 +18,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -87,6 +89,31 @@ public class EmployeeController {
         String fileName = CommonUtils.getFileNameReportUpdate("EXPORT_EMPLOYEE");
         headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName);
         return new ResponseEntity<>(new InputStreamResource(result), headers, HttpStatus.OK);
+    }
+
+    @PostMapping("/export-pdf")
+    public ResponseEntity<byte[]> exportPdf() throws Exception {
+        // Tạo một tài liệu HTML
+        String htmlContent = "<html><body><h1>Hello, world!</h1></body></html>";
+
+        // Tạo một đối tượng ITextRenderer
+        ITextRenderer renderer = new ITextRenderer();
+
+        // Render tài liệu HTML thành PDF
+        renderer.setDocumentFromString(htmlContent);
+        renderer.layout();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        renderer.createPDF(baos);
+
+        // Lấy byte array của tài liệu PDF
+        byte[] pdfBytes = baos.toByteArray();
+
+        // Thiết lập header và trả về tài liệu PDF
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDispositionFormData("attachment", "ho_so_nhan_vien.pdf");
+        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+        return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
     }
 
 }
