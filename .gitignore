@@ -31,3 +31,13 @@ build/
 
 ### VS Code ###
 .vscode/
+/target/classes/template/code-register-provider.html
+/target/classes/com/company_management/config/ScheduledTasks.class
+/target/classes/com/company_management/model/dto/UserDetailWageDTO$UserDetailWageDTOBuilder.class
+/target/classes/com/company_management/model/dto/UserDetailWageDTO.class
+/target/classes/com/company_management/repository/UserDetailWageRepository.class
+/target/classes/com/company_management/controller/HRM/WageController.class
+/target/classes/com/company_management/repository/WageRepositoryCustom.class
+/target/classes/com/company_management/repository/impl/WageRepositoryImpl.class
+/target/classes/com/company_management/model/response/WageResponse$WageResponseBuilder.class
+/target/classes/com/company_management/model/response/WageResponse.class
