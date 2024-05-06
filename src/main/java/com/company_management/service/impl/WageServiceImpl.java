@@ -123,6 +123,9 @@ public class WageServiceImpl implements WageService {
         if (!DataUtils.isNullOrEmpty(wageDTO.getWageBase())) {
             wage.setWageBase(wageDTO.getWageBase());
         }
+        if (!DataUtils.isNullOrEmpty(wageDTO.getWageDescription())) {
+            wage.setWageDescription(wageDTO.getWageDescription());
+        }
         if (!DataUtils.isNullOrEmpty(wageDTO.getIsActive())) {
             wage.setIsActive(wageDTO.getIsActive());
         }
