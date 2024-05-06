@@ -21,7 +21,7 @@ public class WageDTO {
     private String wageDescription;
     private Integer isActive;
     private String attachFile;  //file thong tin phu cap
-    private Long empSign;
+    private String empSign;
     private Long userDetailWageId;
     private Date licenseDate;
     private Date createdDate;

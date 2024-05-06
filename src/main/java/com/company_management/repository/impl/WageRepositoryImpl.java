@@ -34,7 +34,7 @@ public class WageRepositoryImpl implements WageRepositoryCustom {
                 "    wa.wage_name as wageName,\n" +
                 "    wa.wage_base as wageBase,\n" +
                 "    wa.wage_description as wageDescription,\n" +
-                "    wa.attachfile as attachfile,\n" +
+                "    wa.attachfile as attachFile,\n" +
                 "    udw.wage_id as wageId,\n" +
                 "    udw.user_detail_id as userDetailId,\n" +
                 "    udw.emp_sign as empSign,\n" +
@@ -89,7 +89,7 @@ public class WageRepositoryImpl implements WageRepositoryCustom {
 
         List<Object[]> resultList = nativeQuery.getResultList();
         List<WageDTO> listObjectsToClass = DataUtils.convertListObjectsToClass(Arrays.asList(
-                "userDetailWageId","wageName", "wageBase", "wageDescription", "attachfile", "wageId", "userDetailId", "empSign", "licenseDate"),
+                "userDetailWageId","wageName", "wageBase", "wageDescription", "attachFile", "wageId", "userDetailId", "empSign", "licenseDate"),
                 resultList,
                 WageDTO.class);
         DataPage<WageDTO> dataPage = new DataPage<>();
