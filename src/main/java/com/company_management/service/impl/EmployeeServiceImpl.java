@@ -10,6 +10,7 @@ import com.company_management.model.entity.UserDetail;
 import com.company_management.model.mapper.EmployeeMapper;
 import com.company_management.model.request.SearchEmployeeRequest;
 import com.company_management.model.response.DataPage;
+import com.company_management.model.response.ExportPdfEmployeeResponse;
 import com.company_management.model.response.UserDetailExcelResponse;
 import com.company_management.repository.*;
 import com.company_management.service.EmployeeService;
@@ -356,5 +357,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         return new AbstractMap.SimpleEntry<>(sql, params);
     }
 
+    @Override
+    public ExportPdfEmployeeResponse exportPdf(Long userDetailId) {
+        return null;
+    }
 
 }

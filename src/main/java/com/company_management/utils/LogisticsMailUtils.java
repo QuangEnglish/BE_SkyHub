@@ -1,6 +1,7 @@
 package com.company_management.utils;
 
 import com.company_management.model.dto.AttendanceLeaveDTO;
+import com.company_management.model.response.ExportPdfEmployeeResponse;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -46,6 +47,22 @@ public class LogisticsMailUtils {
         params.put("reviewerName", attendanceLeaveDTO.getReviewerName());
         params.put("trackerId", attendanceLeaveDTO.getTrackerId());
         params.put("trackerName", attendanceLeaveDTO.getTrackerName());
+        return params;
+    }
+
+    public static Map<String, Object> sendExportPdfEmployee(ExportPdfEmployeeResponse exportPdfEmployeeResponse) {
+        Map<String, Object> params = new HashMap<>();
+//        params.put("leaveCategory", attendanceLeaveDTO.getLeaveCategory());
+//        params.put("startDayConvert", attendanceLeaveDTO.getStartDayConvert());
+//        params.put("endDayConvert", attendanceLeaveDTO.getEndDayConvert());
+//        params.put("totalTime", attendanceLeaveDTO.getTotalTime());
+//        params.put("description", attendanceLeaveDTO.getDescription());
+//        params.put("employeeId", attendanceLeaveDTO.getEmployeeId());
+//        params.put("employeeName", attendanceLeaveDTO.getEmployeeName());
+//        params.put("reviewerId", attendanceLeaveDTO.getReviewerId());
+//        params.put("reviewerName", attendanceLeaveDTO.getReviewerName());
+//        params.put("trackerId", attendanceLeaveDTO.getTrackerId());
+//        params.put("trackerName", attendanceLeaveDTO.getTrackerName());
         return params;
     }
 

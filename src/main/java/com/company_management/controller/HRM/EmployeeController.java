@@ -6,6 +6,7 @@ import com.company_management.model.dto.UserDetailDTO;
 import com.company_management.model.request.SearchEmployeeRequest;
 import com.company_management.service.EmployeeService;
 import com.company_management.utils.CommonUtils;
+import com.company_management.utils.LogisticsMailUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.thymeleaf.ITemplateEngine;
+import org.thymeleaf.context.Context;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import java.io.ByteArrayInputStream;
@@ -26,6 +29,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -34,6 +38,8 @@ import java.nio.file.Paths;
 public class EmployeeController {
 
     private final EmployeeService employeeService;
+
+    private final ITemplateEngine templateEngine;
 
     @Value("${upload.path}")
     private String fileUpload;
@@ -91,10 +97,10 @@ public class EmployeeController {
         return new ResponseEntity<>(new InputStreamResource(result), headers, HttpStatus.OK);
     }
 
-    @PostMapping("/export-pdf")
-    public ResponseEntity<byte[]> exportPdf() throws Exception {
+    @PostMapping("/export-pdf/{id}")
+    public ResponseEntity<byte[]> exportPdf(@PathVariable("id") Long id) {
         // Tạo một tài liệu HTML
-        String htmlContent = "<html><body><h1>Hello, world!</h1></body></html>";
+        String htmlContent = parseThymeleafTemplate(id);
 
         // Tạo một đối tượng ITextRenderer
         ITextRenderer renderer = new ITextRenderer();
@@ -114,6 +120,22 @@ public class EmployeeController {
         headers.setContentDispositionFormData("attachment", "ho_so_nhan_vien.pdf");
         headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
         return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
+    }
+
+    private String parseThymeleafTemplate(Long userDetailId) {
+//        ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
+//        templateResolver.setSuffix(".html");
+//        templateResolver.setTemplateMode(TemplateMode.HTML);
+
+//        TemplateEngine templateEngine = new TemplateEngine();
+//        templateEngine.setTemplateResolver(templateResolver);
+
+        Map<String, Object> params = LogisticsMailUtils.sendExportPdfEmployee(employeeService.exportPdf(userDetailId));
+
+        Context context = new Context();
+        context.setVariables(params);
+        return templateEngine.process("export_pdf_employee.html", context);
+//        return templateEngine.process("export_pdf_employee", context);
     }
 
 }

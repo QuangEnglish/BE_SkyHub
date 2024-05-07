@@ -3,6 +3,7 @@ package com.company_management.service;
 import com.company_management.model.dto.UserDetailDTO;
 import com.company_management.model.request.SearchEmployeeRequest;
 import com.company_management.model.response.DataPage;
+import com.company_management.model.response.ExportPdfEmployeeResponse;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,4 +25,7 @@ public interface EmployeeService {
     ByteArrayInputStream exportExcel(SearchEmployeeRequest searchEmployeeRequest, Pageable pageable);
 
     void updateEmployeeStatus();
+
+    ExportPdfEmployeeResponse exportPdf(Long userDetailId);
+
 }
