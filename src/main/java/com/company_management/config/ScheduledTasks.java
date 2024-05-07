@@ -1,12 +1,16 @@
 package com.company_management.config;
 
 import com.company_management.service.EmployeeService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 
 import java.time.format.DateTimeFormatter;
 
-@Component
+@Configuration
+@EnableScheduling
+@Slf4j
 public class ScheduledTasks {
 
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
@@ -17,8 +21,9 @@ public class ScheduledTasks {
         this.employeeService = employeeService;
     }
 
-    @Scheduled(cron = "0 0 18,8,23 * * *") // Chạy vào lúc 18:00:00 hàng ngày
+    @Scheduled(cron = "0 0 11,12,13 * * *")
     public void updateEmployeeStatusTask() {
+        log.info("Update lại isActive userDetail");
         employeeService.updateEmployeeStatus();
     }
 }
