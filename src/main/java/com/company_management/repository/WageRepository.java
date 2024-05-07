@@ -33,6 +33,6 @@ public interface WageRepository extends JpaRepository<Wage, Long>, WageRepositor
             Pageable pageable);
 
     @Modifying
-    @Query(value = "update Wage c set c.isActive = 0, c.updatedDate = now(), c.updatedUser = :user where c.id = :id and c.isActive = 1")
+    @Query(value = "update Wage c set c.isActive = 0, c.updatedDate = now(), c.updatedUser = :user where c.id = :id and c.isActive = 1 or c.isActive = 2 ")
     int updateById(Long id, Long user);
 }

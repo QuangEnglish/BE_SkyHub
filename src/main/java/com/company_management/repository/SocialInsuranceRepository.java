@@ -13,7 +13,7 @@ public interface SocialInsuranceRepository extends JpaRepository<SocialInsurance
 
     Page<SocialInsurance> findByUserDetailId(Long userDetailId, Pageable pageable);
     @Modifying
-    @Query(value = "update SocialInsurance s set s.isActive = 0, s.updatedDate = now(), s.updatedUser = :user where s.id = :id and s.isActive = 1")
+    @Query(value = "update SocialInsurance s set s.isActive = 0, s.updatedDate = now(), s.updatedUser = :user where s.id = :id and s.isActive = 1 or s.isActive = 2 ")
     int updateById(Long id, Long user);
 
 }

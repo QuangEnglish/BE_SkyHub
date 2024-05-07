@@ -21,6 +21,6 @@ public interface AttendanceRepository extends JpaRepository<Attendance, Long>, A
     Long findIdAllWithEmployeeId(@Param("employeeId") Long employeeId, @Param("workingDay") Date workingDay);
 
     @Modifying
-    @Query(value = "update Attendance c set c.isActive = 0, c.updatedDate = now(), c.updatedUser = :user where c.id = :id and c.isActive = 1")
+    @Query(value = "update Attendance c set c.isActive = 0, c.updatedDate = now(), c.updatedUser = :user where c.id = :id and c.isActive = 1 or c.isActive = 2 ")
     int updateById(Long id, Long user);
 }

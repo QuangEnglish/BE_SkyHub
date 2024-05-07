@@ -13,6 +13,6 @@ public interface QualificationRepository extends JpaRepository<Qualification, Lo
 
     Page<Qualification> findByUserDetailId(Long userDetailId, Pageable pageable);
     @Modifying
-    @Query(value = "update Qualification q set q.isActive = 0, q.updatedDate = now(), q.updatedUser = :user where q.id = :id and q.isActive = 1")
+    @Query(value = "update Qualification q set q.isActive = 0, q.updatedDate = now(), q.updatedUser = :user where q.id = :id and q.isActive = 1 or q.isActive = 2 ")
     int updateById(Long id, Long user);
 }

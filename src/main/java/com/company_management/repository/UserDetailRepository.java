@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
 public interface UserDetailRepository extends JpaRepository<UserDetail, Long> {
 
     @Modifying
-    @Query(value = "update UserDetail c set c.isActive = 2, c.updatedDate = now(), c.updatedUser = :user where c.id = :id and c.isActive = 1 ")
+    @Query(value = "update UserDetail c set c.isActive = 2, c.updatedDate = now(), c.updatedUser = :user where c.id = :id and c.isActive = 1 or c.isActive = 2 ")
     int updateIsActiveById(Long id, Long user);
 }
