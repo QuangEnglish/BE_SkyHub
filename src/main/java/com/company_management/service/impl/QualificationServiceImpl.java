@@ -30,7 +30,9 @@ public class QualificationServiceImpl implements QualificationService {
     @Transactional(readOnly = true)
     public Page<QualificationDTO> search(Long userDetailId, Pageable pageable) {
         Page<Qualification> qualificationEntyList = qualificationRepository.findByUserDetailId(userDetailId, pageable);
-        List<QualificationDTO> qualificationDTOList = qualificationEntyList.stream().map(
+        List<QualificationDTO> qualificationDTOList = qualificationEntyList.stream()
+                .filter(res -> res.getIsActive() == 1 )
+                .map(
                 res -> {
                     QualificationDTO qualificationDTO = new QualificationDTO();
                     qualificationDTO.setId(res.getId());
