@@ -24,6 +24,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 @Service
 @RequiredArgsConstructor
@@ -50,20 +51,20 @@ public class AttendanceServiceImpl implements AttendanceService {
             log.debug("// Bắt đầu chấm công");
             attendance = new Attendance();
             attendance.setWorkingDay(attendanceDTO.getWorkingDay());
-            attendance.setCheckInTime(attendanceDTO.getCheckInTime());
+            attendance.setCheckInTime(toNearestWholeHour(attendanceDTO.getCheckInTime()));
             UserCustom userCustom = userCustomRepository.findById(CommonUtils.getUserLoginName()).orElseThrow(
                     () -> new AppException("ERR01", "Không tìm thấy tài khoản này")
             );
             attendance.setEmployeeId(userCustom.getUserDetailId());
             attendance.setIsActive(1);
-            Calendar nineAM = Calendar.getInstance();
-            nineAM.set(Calendar.HOUR_OF_DAY, 8);
-            nineAM.set(Calendar.MINUTE, 30);
-            nineAM.set(Calendar.SECOND, 0);
+            Calendar eightAM = Calendar.getInstance();
+            eightAM.set(Calendar.HOUR_OF_DAY, 8);
+            eightAM.set(Calendar.MINUTE, 0);
+            eightAM.set(Calendar.SECOND, 0);
             Calendar currentTime = Calendar.getInstance();
             currentTime.setTime(attendanceDTO.getCheckInTime());
-            if (currentTime.after(nineAM)) {
-                long diffInMillis = currentTime.getTimeInMillis() - nineAM.getTimeInMillis();
+            if (currentTime.after(eightAM)) {
+                long diffInMillis = currentTime.getTimeInMillis() - eightAM.getTimeInMillis();
                 long diffInMinutes = diffInMillis / (60 * 1000);
                 attendance.setTotalPenalty(diffInMinutes);
             } else {
@@ -79,7 +80,7 @@ public class AttendanceServiceImpl implements AttendanceService {
             UserCustom userCustom = userCustomRepository.findById(CommonUtils.getUserLoginName()).orElseThrow(
                     () -> new AppException("ERR01", "Không tìm thấy tài khoản này")
             );
-            attendance.setCheckOutTime(attendanceDTO.getCheckOutTime());
+
             Date checkOutTime = attendanceDTO.getCheckOutTime();
             Date checkInTime = attendance.getCheckInTime();
             LocalDateTime checkOutLocalDateTime = LocalDateTime.ofInstant(checkOutTime.toInstant(), ZoneId.systemDefault());
@@ -89,15 +90,12 @@ public class AttendanceServiceImpl implements AttendanceService {
             double hoursDifference = duration.toHours(); // Số giờ trả về dưới dạng double
             log.info("Difference in hours: " + hoursDifference);
             attendance.setWorkingPoint(hoursDifference);
-            if (hoursDifference >= 7) {
+            if (hoursDifference >= 6) {
                 attendance.setWorkingPoint(1.0);
                 attendance.setWorkingTime(8.0);
-            } else if (hoursDifference >= 2.5) {
+            }else {
                 attendance.setWorkingPoint(0.5);
-                attendance.setWorkingTime(3.0);
-            } else {
-                attendance.setWorkingPoint(0.0);
-                attendance.setWorkingTime(0.0);
+                attendance.setWorkingTime(4.0);
             }
             Calendar sixPM = Calendar.getInstance();
             sixPM.set(Calendar.HOUR_OF_DAY, 18);
@@ -110,7 +108,7 @@ public class AttendanceServiceImpl implements AttendanceService {
                 long diffInMinutes = diffInMillis / (60 * 1000);
                 attendance.setTotalPenalty(attendance.getTotalPenalty() + diffInMinutes);
             }
-
+            attendance.setCheckOutTime(toNearestWholeHour(attendanceDTO.getCheckOutTime()));
         }
         attendanceRepository.save(attendance);
     }
@@ -128,4 +126,35 @@ public class AttendanceServiceImpl implements AttendanceService {
         );
         return attendanceRepository.findIdAllWithEmployeeId(userCustom.getUserDetailId(), attendanceDTO.getWorkingDay());
     }
+
+    static Date toNearestWholeMinute(Date d) {
+        Calendar c = new GregorianCalendar();
+        c.setTime(d);
+
+        if (c.get(Calendar.SECOND) >= 30)
+            c.add(Calendar.MINUTE, 1);
+
+        c.set(Calendar.SECOND, 0);
+
+        return c.getTime();
+    }
+
+    static Date toNearestWholeHour(Date d) {
+        Calendar c = new GregorianCalendar();
+        c.setTime(d);
+
+        if (c.get(Calendar.MINUTE) >= 45){
+            c.add(Calendar.HOUR, 1);
+            c.set(Calendar.MINUTE, 0);
+        }else if(c.get(Calendar.MINUTE) >= 30){
+            c.set(Calendar.MINUTE, 30);
+        }else if(c.get(Calendar.MINUTE) >= 15){
+            c.set(Calendar.MINUTE, 30);
+        }else{
+            c.set(Calendar.MINUTE, 0);
+        }
+        c.set(Calendar.SECOND, 0);
+        return c.getTime();
+    }
+
 }
