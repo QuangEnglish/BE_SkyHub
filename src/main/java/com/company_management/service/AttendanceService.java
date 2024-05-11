@@ -17,4 +17,7 @@ public interface AttendanceService {
     ByteArrayInputStream exportExcel(SearchAttendanceRequest searchAttendanceRequest, Pageable pageable);
 
     Long detailAttendanceId(AttendanceDTO attendanceDTO);
+
+    ByteArrayInputStream exportListFollowMonth(SearchAttendanceRequest searchAttendanceRequest);
+
 }

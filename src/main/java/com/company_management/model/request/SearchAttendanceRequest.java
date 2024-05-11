@@ -16,5 +16,5 @@ public class SearchAttendanceRequest {
     private String employeeName;
     private Long departmentId;
     private Date workingDay;
-
+    private Date currentMonth;
 }

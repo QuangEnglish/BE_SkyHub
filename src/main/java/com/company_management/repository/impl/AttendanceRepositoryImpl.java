@@ -1,7 +1,9 @@
 package com.company_management.repository.impl;
 
 
+import com.company_management.model.dto.AttendanceLeaveDTO;
 import com.company_management.model.request.SearchAttendanceRequest;
+import com.company_management.model.response.AttendanceExportExcelResponse;
 import com.company_management.model.response.AttendanceResponse;
 import com.company_management.model.response.DataPage;
 import com.company_management.repository.AttendanceRepositoryCustom;
@@ -94,6 +96,50 @@ public class AttendanceRepositoryImpl implements AttendanceRepositoryCustom {
         }
         dataPage.setData(lstAttendance);
         return dataPage;
+    }
+
+    @Override
+    public List<AttendanceExportExcelResponse> searchExport(SearchAttendanceRequest searchAttendanceRequest) {
+        StringBuilder sqlSelect = new StringBuilder();
+        sqlSelect.append("select le.id as leaveID,\n" +
+                "       le.leave_category as leaveCategory,\n" +
+                "       le.employee_id as employeeId,\n" +
+                "       ud.employee_code as employeeCode,\n" +
+                "       ud.employee_name as employeeName,\n" +
+                "       le.start_day as startDay,\n" +
+                "       le.end_day as endDay,\n" +
+                "       le.description as description,\n" +
+                "       le.total_time as totalTime,\n" +
+                "       le.tracker_id as trackerId,\n" +
+                "       ut.employee_code as trackerCode,\n" +
+                "       ut.employee_name as trackerName,\n" +
+                "       le.reviewer_id as reviewerId,\n" +
+                "       ur.employee_code as reviewerCode,\n" +
+                "       ur.employee_name as reviewerName,\n" +
+                "       le.is_active as isActive\n" +
+                "from attendance_leave le\n" +
+                "left join user_detail ud on le.employee_id = ud.id\n" +
+                "left join user_detail ut on le.tracker_id = ut.id\n" +
+                "left join user_detail ur on le.reviewer_id = ur.id\n" +
+                "where 1 = 1\n");
+
+        Map<String, Object> map = getStringObjectMap(searchAttendanceRequest, sqlSelect);
+//        if (pageable.isPaged() && pageable.getSort().isSorted()) {
+//            sqlSelect.append(" ORDER BY le.")
+//                    .append(pageable.getSort().toString().replace(":", " "))
+//                    .append(", le.id desc");
+//        }
+        Query nativeQuery = entityManager.createNativeQuery(sqlSelect.toString());
+
+        if (!map.isEmpty()) {
+            map.forEach(nativeQuery::setParameter);
+        }
+        return DataUtils.convertListObjectsToClass(
+                Arrays.asList("leaveID", "leaveCategory", "employeeId", "employeeCode", "employeeName", "startDay",
+                        "endDay", "description", "totalTime", "trackerId", "trackerCode", "trackerName",
+                        "reviewerId", "reviewerCode", "reviewerName", "isActive"),
+                nativeQuery.getResultList(),
+                AttendanceLeaveDTO.class);
     }
 
     private static Map<String, Object> getStringObjectMap(SearchAttendanceRequest searchAttendanceRequest, StringBuilder sqlSelect) {
