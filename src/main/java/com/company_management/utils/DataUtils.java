@@ -46,6 +46,23 @@ public class DataUtils {
         return lsResult;
     }
 
+    public static List<String> convertObjectListToStringList(List<Object[]> objectList) {
+        List<String> stringList = new ArrayList<>();
+
+        for (Object[] array : objectList) {
+            // Chuyển đổi mỗi mảng Object[] thành một chuỗi sử dụng Arrays.toString()
+            String str = Arrays.toString(array);
+
+            // Xóa dấu ngoặc vuông ở đầu và cuối chuỗi để loại bỏ mảng trong kết quả
+            str = str.substring(1, str.length() - 1);
+
+            // Thêm chuỗi đã chuyển đổi vào danh sách kết quả
+            stringList.add(str);
+        }
+
+        return stringList;
+    }
+
     @SneakyThrows
     public static <T> T convertObjectsToClass(List<String> attConvert, Object[] objects, Class<?> aClass) {
         Object object = aClass.newInstance();

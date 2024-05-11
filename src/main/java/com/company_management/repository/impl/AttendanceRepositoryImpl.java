@@ -1,31 +1,30 @@
 package com.company_management.repository.impl;
 
 
-import com.company_management.model.dto.AttendanceLeaveDTO;
 import com.company_management.model.request.SearchAttendanceRequest;
-import com.company_management.model.response.AttendanceExportExcelResponse;
-import com.company_management.model.response.AttendanceResponse;
-import com.company_management.model.response.DataPage;
+import com.company_management.model.response.*;
 import com.company_management.repository.AttendanceRepositoryCustom;
 import com.company_management.utils.DataUtils;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Repository
 @RequiredArgsConstructor
+@Slf4j
 public class AttendanceRepositoryImpl implements AttendanceRepositoryCustom {
 
     @PersistenceContext
     private EntityManager entityManager;
+
+    private final JdbcTemplate jdbcTemplate;
 
 
     @Override
@@ -100,46 +99,129 @@ public class AttendanceRepositoryImpl implements AttendanceRepositoryCustom {
 
     @Override
     public List<AttendanceExportExcelResponse> searchExport(SearchAttendanceRequest searchAttendanceRequest) {
+        createTemporaryTable(searchAttendanceRequest.getWorkingDay());
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(searchAttendanceRequest.getWorkingDay());
+        int month = calendar.get(Calendar.MONTH) + 1;
+        int year = calendar.get(Calendar.YEAR);
+
         StringBuilder sqlSelect = new StringBuilder();
-        sqlSelect.append("select le.id as leaveID,\n" +
-                "       le.leave_category as leaveCategory,\n" +
-                "       le.employee_id as employeeId,\n" +
-                "       ud.employee_code as employeeCode,\n" +
+
+        sqlSelect.append("SELECT ud.id as employeeId,\n" +
+                "       ud.employee_code as employee_code,\n" +
                 "       ud.employee_name as employeeName,\n" +
-                "       le.start_day as startDay,\n" +
-                "       le.end_day as endDay,\n" +
-                "       le.description as description,\n" +
-                "       le.total_time as totalTime,\n" +
-                "       le.tracker_id as trackerId,\n" +
-                "       ut.employee_code as trackerCode,\n" +
-                "       ut.employee_name as trackerName,\n" +
-                "       le.reviewer_id as reviewerId,\n" +
-                "       ur.employee_code as reviewerCode,\n" +
-                "       ur.employee_name as reviewerName,\n" +
-                "       le.is_active as isActive\n" +
-                "from attendance_leave le\n" +
-                "left join user_detail ud on le.employee_id = ud.id\n" +
-                "left join user_detail ut on le.tracker_id = ut.id\n" +
-                "left join user_detail ur on le.reviewer_id = ur.id\n" +
-                "where 1 = 1\n");
+                "       SUM(at.total_penalty) AS totalPenalty,\n" +
+                "       SUM(at.working_point) AS workingPoint,\n" +
+                "       SUM(at.working_time) AS workingTime,\n" +
+                "       SUM(al.total_time) AS totalTimeLeave,\n" +
+                "       SUM(ao.total_time) AS totalTimeOt\n" +
+                "FROM user_detail ud\n" +
+                "         LEFT JOIN (\n" +
+                "    SELECT employee_id,\n" +
+                "           SUM(total_penalty) AS total_penalty,\n" +
+                "           SUM(working_point) AS working_point,\n" +
+                "           SUM(working_time) AS working_time\n" +
+                "    FROM attendance\n" +
+                "    WHERE MONTH(working_day) = :month AND YEAR(working_day) = :year\n" +
+                "    GROUP BY employee_id\n" +
+                ") at ON ud.id = at.employee_id\n" +
+                "         LEFT JOIN (\n" +
+                "    SELECT employee_id,\n" +
+                "           SUM(total_time) AS total_time\n" +
+                "    FROM attendance_leave\n" +
+                "    WHERE MONTH(end_day) = :month AND YEAR(end_day) = :year\n" +
+                "    GROUP BY employee_id\n" +
+                ") al ON ud.id = al.employee_id\n" +
+                "         LEFT JOIN (\n" +
+                "    SELECT employee_id,\n" +
+                "           SUM(total_time) AS total_time\n" +
+                "    FROM attendance_ot\n" +
+                "    WHERE MONTH(start_day) = :month AND YEAR(start_day) = :year\n" +
+                "    GROUP BY employee_id\n" +
+                ") ao ON ud.id = ao.employee_id\n" +
+                "WHERE 1=1\n" +
+                "AND (:employeeId is null or ud.id = :employeeId)\n" +
+                "GROUP BY ud.id " +
+                "HAVING\n" +
+                "    totalPenalty IS NOT NULL;");
 
-        Map<String, Object> map = getStringObjectMap(searchAttendanceRequest, sqlSelect);
-//        if (pageable.isPaged() && pageable.getSort().isSorted()) {
-//            sqlSelect.append(" ORDER BY le.")
-//                    .append(pageable.getSort().toString().replace(":", " "))
-//                    .append(", le.id desc");
-//        }
-        Query nativeQuery = entityManager.createNativeQuery(sqlSelect.toString());
+        Map<String, Object> mapJoin = new HashMap<>();
+        mapJoin.put("employeeId", searchAttendanceRequest.getEmployeeId());
+        mapJoin.put("month", month);
+        mapJoin.put("year", year);
 
-        if (!map.isEmpty()) {
-            map.forEach(nativeQuery::setParameter);
+        Query nativeQueryJoin = entityManager.createNativeQuery(sqlSelect.toString());
+        if (!mapJoin.isEmpty()) {
+            mapJoin.forEach(nativeQueryJoin::setParameter);
         }
+
+        List<Object[]> resultList = nativeQueryJoin.getResultList();
+        List<AttendanceExportExcelResponse> lstAttendanceExportExcelResponses = DataUtils.convertListObjectsToClass(
+                Arrays.asList("employeeId", "employeeCode", "employeeName", "totalPenalty",
+                        "workingPoint", "workingTime", "totalTimeLeave", "totalTimeOt"),
+                resultList,
+                AttendanceExportExcelResponse.class);
+        for (AttendanceExportExcelResponse res : lstAttendanceExportExcelResponses) {
+            res.setCheckInExportExcelResponse(listCheckIn(res.getEmployeeId()));
+            res.setCheckOutExportExcelResponse(listCheckOut(res.getEmployeeId()));
+        }
+        return lstAttendanceExportExcelResponses;
+    }
+
+    public List<CheckInExportExcelResponse> listCheckIn(Long employeeId) {
+        StringBuilder sqlSelectJoin = new StringBuilder();
+        sqlSelectJoin.append("SELECT CAST(DAY(temporary_table.day) AS SIGNED) AS day, \n" +
+                "    COALESCE(DATE_FORMAT(attendance.check_in_time, '%H:%i'), 'V') AS checkIn\n" +
+                "FROM\n" +
+                "    temporary_table\n" +
+                "        LEFT JOIN\n" +
+                "    attendance ON temporary_table.day = DATE(attendance.check_in_time)\n" +
+                "        AND (attendance.employee_id IS NULL OR employee_id = :employeeId)\n" +
+                "WHERE\n" +
+                "        1 = 1\n" +
+                "GROUP BY\n" +
+                "    temporary_table.day\n" +
+                "ORDER BY day ASC;");
+        Map<String, Object> mapJoin = new HashMap<>();
+        mapJoin.put("employeeId", employeeId);
+
+        Query nativeQueryJoin = entityManager.createNativeQuery(sqlSelectJoin.toString());
+        if (!mapJoin.isEmpty()) {
+            mapJoin.forEach(nativeQueryJoin::setParameter);
+        }
+        List<Object[]> resultList = nativeQueryJoin.getResultList();
         return DataUtils.convertListObjectsToClass(
-                Arrays.asList("leaveID", "leaveCategory", "employeeId", "employeeCode", "employeeName", "startDay",
-                        "endDay", "description", "totalTime", "trackerId", "trackerCode", "trackerName",
-                        "reviewerId", "reviewerCode", "reviewerName", "isActive"),
-                nativeQuery.getResultList(),
-                AttendanceLeaveDTO.class);
+                Arrays.asList("checkIn", "day"),
+                resultList,
+                CheckInExportExcelResponse.class);
+    }
+
+    private List<CheckOutExportExcelResponse> listCheckOut(Long employeeId) {
+        StringBuilder sqlSelectJoin = new StringBuilder();
+        sqlSelectJoin.append("SELECT CAST(DAY(temporary_table.day) AS SIGNED) AS day, \n" +
+                "    COALESCE(DATE_FORMAT(attendance.check_out_time, '%H:%i'), 'V') AS checkOut\n" +
+                "FROM\n" +
+                "    temporary_table\n" +
+                "        LEFT JOIN\n" +
+                "    attendance ON temporary_table.day = DATE(attendance.check_out_time)\n" +
+                "        AND (attendance.employee_id IS NULL OR employee_id = :employeeId)\n" +
+                "WHERE\n" +
+                "        1 = 1\n" +
+                "GROUP BY\n" +
+                "    temporary_table.day\n" +
+                "ORDER BY day ASC;");
+        Map<String, Object> mapJoin = new HashMap<>();
+        mapJoin.put("employeeId", employeeId);
+
+        Query nativeQueryJoin = entityManager.createNativeQuery(sqlSelectJoin.toString());
+        if (!mapJoin.isEmpty()) {
+            mapJoin.forEach(nativeQueryJoin::setParameter);
+        }
+        List<Object[]> resultList = nativeQueryJoin.getResultList();
+        return DataUtils.convertListObjectsToClass(
+                Arrays.asList("checkOut", "day"),
+                resultList,
+                CheckOutExportExcelResponse.class);
     }
 
     private static Map<String, Object> getStringObjectMap(SearchAttendanceRequest searchAttendanceRequest, StringBuilder sqlSelect) {
@@ -161,5 +243,46 @@ public class AttendanceRepositoryImpl implements AttendanceRepositoryCustom {
             map.put("departmentId", searchAttendanceRequest.getDepartmentId());
         }
         return map;
+    }
+
+//    private static Map<String, Object> getStringObjectMapMonthYear(SearchAttendanceRequest searchAttendanceRequest, StringBuilder sqlSelect) {
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.setTime(searchAttendanceRequest.getWorkingDay());
+//        int month = calendar.get(Calendar.MONTH) + 1;
+//        int year = calendar.get(Calendar.YEAR);
+//        Map<String, Object> map = new HashMap<>();
+//        sqlSelect.append("  SET @month = :month; ");
+//        map.put("month", month);
+//        sqlSelect.append("  SET @year = :year; ");
+//        map.put("year", year);
+//        return map;
+//    }
+
+    private void createTemporaryTable(Date workingDay){
+        StringBuilder sqlSelect = new StringBuilder();
+        sqlSelect.append("CREATE TEMPORARY TABLE temporary_table (\n" +
+                "    day DATE\n" +
+                ");\n");
+        jdbcTemplate.execute(String.valueOf(sqlSelect));
+
+        StringBuilder sqlSeleInsert = new StringBuilder();
+        sqlSeleInsert.append(
+                "INSERT INTO temporary_table (day)\n" +
+                        " SELECT DATE_ADD(CONCAT(?, '-', LPAD(?, 2, '0'), '-01'), INTERVAL (t.digit + (t10.digit * 10)) DAY)\n" +
+                        "FROM\n" +
+                        "    (SELECT 0 AS digit\n" +
+                        "     UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4\n" +
+                        "     UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9) AS t\n" +
+                        "    CROSS JOIN\n" +
+                        "    (SELECT 0 AS digit UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4\n" +
+                        "     UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9) AS t10\n" +
+                        "WHERE DATE_ADD(CONCAT(?, '-', LPAD(?, 2, '0'), '-01'), INTERVAL (t.digit + (t10.digit * 10)) DAY) <= LAST_DAY(CONCAT(?, '-', LPAD(?, 2, '0'), '-01'));");
+
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(workingDay);
+        int month = calendar.get(Calendar.MONTH) + 1;
+        int year = calendar.get(Calendar.YEAR);
+        jdbcTemplate.update(String.valueOf(sqlSeleInsert), year, month, year, month, year, month);
     }
 }

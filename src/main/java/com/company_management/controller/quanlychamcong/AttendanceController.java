@@ -56,7 +56,7 @@ public class AttendanceController {
         ByteArrayInputStream result = attendanceService.exportListFollowMonth(searchAttendanceRequest);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-        String fileName = CommonUtils.getFileNameReportUpdate("EXPORT_OT");
+        String fileName = CommonUtils.getFileNameReportUpdate("EXPORT_CHAM_CONG_THANG");
         headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName);
         return new ResponseEntity<>(new InputStreamResource(result), headers, HttpStatus.OK);
     }
