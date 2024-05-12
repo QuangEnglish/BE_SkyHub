@@ -4,6 +4,7 @@ import com.company_management.model.dto.AttendanceDTO;
 import com.company_management.model.request.SearchAttendanceRequest;
 import com.company_management.model.response.AttendanceResponse;
 import com.company_management.model.response.DataPage;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.data.domain.Pageable;
 
 import java.io.ByteArrayInputStream;
@@ -19,5 +20,7 @@ public interface AttendanceService {
     Long detailAttendanceId(AttendanceDTO attendanceDTO);
 
     ByteArrayInputStream exportListFollowMonth(SearchAttendanceRequest searchAttendanceRequest);
+
+    void exportServices(SearchAttendanceRequest searchAttendanceRequest, HttpServletResponse response);
 
 }

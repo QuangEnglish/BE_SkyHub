@@ -5,14 +5,14 @@ import com.company_management.model.dto.AttendanceDTO;
 import com.company_management.model.entity.Attendance;
 import com.company_management.model.entity.UserCustom;
 import com.company_management.model.request.SearchAttendanceRequest;
-import com.company_management.model.response.AttendanceExportExcelResponse;
-import com.company_management.model.response.AttendanceResponse;
-import com.company_management.model.response.DataPage;
+import com.company_management.model.response.*;
 import com.company_management.repository.AttendanceRepository;
 import com.company_management.repository.UserCustomRepository;
 import com.company_management.repository.UserDetailRepository;
 import com.company_management.service.AttendanceService;
+import com.company_management.service.impl.exporter.ServiceExcelExporterService;
 import com.company_management.utils.CommonUtils;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jxls.transformer.XLSTransformer;
@@ -38,6 +38,8 @@ public class AttendanceServiceImpl implements AttendanceService {
     private final UserCustomRepository userCustomRepository;
 
     private final UserDetailRepository userDetailRepository;
+
+    private final ServiceExcelExporterService serviceExcelExporterService;
 
     @Override
     @Transactional(readOnly = true)
@@ -141,14 +143,31 @@ public class AttendanceServiceImpl implements AttendanceService {
         if(daysInMonth==31){
             try (InputStream in = CommonUtils.getInputStreamByFileName("export-attendance-month-template.xlsx")) {
                 List<AttendanceExportExcelResponse> attendanceExportExcelResponses = attendanceRepository.searchExport(searchAttendanceRequest);
+                int[] numbers = new int[daysInMonth];
+                for (int i = 0; i < daysInMonth; i++) {
+                    numbers[i] = i + 1;
+                }
                 AtomicInteger index = new AtomicInteger();
                 for (AttendanceExportExcelResponse item : attendanceExportExcelResponses) {
                     item.setIndex(index.incrementAndGet());
+
+                    CheckInExportExcelResponse checkInExportExcelResponse = new CheckInExportExcelResponse();
+                    checkInExportExcelResponse.setCheckIn(attendanceRepository.listCheckIn(item.getEmployeeId()));
+                    checkInExportExcelResponse.setDay(numbers);
+                    item.setCheckIn(checkInExportExcelResponse);
+
+                    CheckOutExportExcelResponse checkOutExportExcelResponse = new CheckOutExportExcelResponse();
+                    checkOutExportExcelResponse.setCheckOut(attendanceRepository.listCheckOut(item.getEmployeeId()));
+                    checkOutExportExcelResponse.setDay(numbers);
+                    item.setCheckOut(checkOutExportExcelResponse);
                 }
+
                 Map<String, Object> beans = new HashMap<>();
                 beans.put("posLst", attendanceExportExcelResponses);
-                beans.put("dateMonth", year);
-                beans.put("dateYear", month);
+                beans.put("dateMonth", month);
+                beans.put("dateYear", year);
+                beans.put("rowNumber", 10);
+                beans.put("colNumber", 4);
                 beans.put("total", attendanceExportExcelResponses.size());
                 XLSTransformer transformer = new XLSTransformer();
                 Workbook workbook = transformer.transformXLS(in, beans);
@@ -162,6 +181,45 @@ public class AttendanceServiceImpl implements AttendanceService {
         }
         return new ByteArrayInputStream(null);
     }
+
+    @Override
+    public void exportServices(SearchAttendanceRequest searchAttendanceRequest, HttpServletResponse response) {
+        Date date = searchAttendanceRequest.getWorkingDay();
+        LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        int year = localDate.getYear();
+        int month = localDate.getMonthValue();
+        YearMonth yearMonth = YearMonth.of(year, month);
+        int daysInMonth = yearMonth.lengthOfMonth();
+        List<AttendanceExportExcelResponse> attendanceExportExcelResponses = attendanceRepository.searchExport(searchAttendanceRequest);
+        int[] numbers = new int[daysInMonth];
+        for (int i = 0; i < daysInMonth; i++) {
+            numbers[i] = i + 1;
+        }
+        AtomicInteger index = new AtomicInteger();
+        for (AttendanceExportExcelResponse item : attendanceExportExcelResponses) {
+            item.setIndex(index.incrementAndGet());
+
+            CheckInExportExcelResponse checkInExportExcelResponse = new CheckInExportExcelResponse();
+            checkInExportExcelResponse.setCheckIn(attendanceRepository.listCheckIn(item.getEmployeeId()));
+            checkInExportExcelResponse.setDay(numbers);
+            item.setCheckIn(checkInExportExcelResponse);
+
+            CheckOutExportExcelResponse checkOutExportExcelResponse = new CheckOutExportExcelResponse();
+            checkOutExportExcelResponse.setCheckOut(attendanceRepository.listCheckOut(item.getEmployeeId()));
+            checkOutExportExcelResponse.setDay(numbers);
+            item.setCheckOut(checkOutExportExcelResponse);
+        }
+        try {
+            serviceExcelExporterService.export(
+                    daysInMonth,
+                    attendanceExportExcelResponses,
+                    response
+            );
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
     static Date toNearestWholeMinute(Date d) {
         Calendar c = new GregorianCalendar();
         c.setTime(d);

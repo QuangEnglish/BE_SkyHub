@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -13,8 +15,8 @@ import lombok.*;
 @Builder
 public class CheckOutExportExcelResponse {
 
-    private String checkOut;
+    private List<String> checkOut;
 
-    private String day;
+    private int[] day;
 
 }

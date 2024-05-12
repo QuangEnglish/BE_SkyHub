@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 import java.util.Date;
-import java.util.List;
 
 @Getter
 @Setter
@@ -28,6 +27,6 @@ public class AttendanceExportExcelResponse {
     private Double totalTimeLeave;
     private Double totalTimeOt;
     private Integer isActive;
-    private List<CheckInExportExcelResponse> checkInExportExcelResponse;
-    private List<CheckOutExportExcelResponse> checkOutExportExcelResponse;
+    private CheckInExportExcelResponse checkIn;
+    private CheckOutExportExcelResponse checkOut;
 }

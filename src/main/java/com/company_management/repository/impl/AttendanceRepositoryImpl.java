@@ -110,11 +110,11 @@ public class AttendanceRepositoryImpl implements AttendanceRepositoryCustom {
         sqlSelect.append("SELECT ud.id as employeeId,\n" +
                 "       ud.employee_code as employee_code,\n" +
                 "       ud.employee_name as employeeName,\n" +
-                "       SUM(at.total_penalty) AS totalPenalty,\n" +
-                "       SUM(at.working_point) AS workingPoint,\n" +
-                "       SUM(at.working_time) AS workingTime,\n" +
-                "       SUM(al.total_time) AS totalTimeLeave,\n" +
-                "       SUM(ao.total_time) AS totalTimeOt\n" +
+                "       COALESCE(SUM(at.total_penalty), 0) AS totalPenalty,\n" +
+                "       COALESCE(SUM(at.working_point), 0) AS workingPoint,\n" +
+                "       COALESCE(SUM(at.working_time), 0) AS workingTime,\n" +
+                "       COALESCE(SUM(al.total_time), 0) AS totalTimeLeave,\n" +
+                "       COALESCE(SUM(ao.total_time), 0) AS totalTimeOt\n" +
                 "FROM user_detail ud\n" +
                 "         LEFT JOIN (\n" +
                 "    SELECT employee_id,\n" +
@@ -143,7 +143,7 @@ public class AttendanceRepositoryImpl implements AttendanceRepositoryCustom {
                 "AND (:employeeId is null or ud.id = :employeeId)\n" +
                 "GROUP BY ud.id " +
                 "HAVING\n" +
-                "    totalPenalty IS NOT NULL;");
+                "    totalPenalty != 0;");
 
         Map<String, Object> mapJoin = new HashMap<>();
         mapJoin.put("employeeId", searchAttendanceRequest.getEmployeeId());
@@ -161,16 +161,13 @@ public class AttendanceRepositoryImpl implements AttendanceRepositoryCustom {
                         "workingPoint", "workingTime", "totalTimeLeave", "totalTimeOt"),
                 resultList,
                 AttendanceExportExcelResponse.class);
-        for (AttendanceExportExcelResponse res : lstAttendanceExportExcelResponses) {
-            res.setCheckInExportExcelResponse(listCheckIn(res.getEmployeeId()));
-            res.setCheckOutExportExcelResponse(listCheckOut(res.getEmployeeId()));
-        }
         return lstAttendanceExportExcelResponses;
     }
 
-    public List<CheckInExportExcelResponse> listCheckIn(Long employeeId) {
+    @Override
+    public List<String> listCheckIn(Long employeeId) {
         StringBuilder sqlSelectJoin = new StringBuilder();
-        sqlSelectJoin.append("SELECT CAST(DAY(temporary_table.day) AS SIGNED) AS day, \n" +
+        sqlSelectJoin.append("SELECT \n" +
                 "    COALESCE(DATE_FORMAT(attendance.check_in_time, '%H:%i'), 'V') AS checkIn\n" +
                 "FROM\n" +
                 "    temporary_table\n" +
@@ -189,16 +186,25 @@ public class AttendanceRepositoryImpl implements AttendanceRepositoryCustom {
         if (!mapJoin.isEmpty()) {
             mapJoin.forEach(nativeQueryJoin::setParameter);
         }
-        List<Object[]> resultList = nativeQueryJoin.getResultList();
-        return DataUtils.convertListObjectsToClass(
-                Arrays.asList("checkIn", "day"),
-                resultList,
-                CheckInExportExcelResponse.class);
+        List<String> resultList = nativeQueryJoin.getResultList();
+//        List<String> stringList = new ArrayList<>();
+//        for (Object[] objArray : resultList) {
+//            StringBuilder stringBuilder = new StringBuilder();
+//            for (int i = 0; i < objArray.length; i++) {
+//                stringBuilder.append(objArray[i].toString());
+//                if (i < objArray.length - 1) {
+//                    stringBuilder.append(", ");
+//                }
+//            }
+//            stringList.add(stringBuilder.toString());
+//        }
+        return resultList;
     }
 
-    private List<CheckOutExportExcelResponse> listCheckOut(Long employeeId) {
+    @Override
+    public List<String> listCheckOut(Long employeeId) {
         StringBuilder sqlSelectJoin = new StringBuilder();
-        sqlSelectJoin.append("SELECT CAST(DAY(temporary_table.day) AS SIGNED) AS day, \n" +
+        sqlSelectJoin.append("SELECT \n" +
                 "    COALESCE(DATE_FORMAT(attendance.check_out_time, '%H:%i'), 'V') AS checkOut\n" +
                 "FROM\n" +
                 "    temporary_table\n" +
@@ -217,14 +223,23 @@ public class AttendanceRepositoryImpl implements AttendanceRepositoryCustom {
         if (!mapJoin.isEmpty()) {
             mapJoin.forEach(nativeQueryJoin::setParameter);
         }
-        List<Object[]> resultList = nativeQueryJoin.getResultList();
-        return DataUtils.convertListObjectsToClass(
-                Arrays.asList("checkOut", "day"),
-                resultList,
-                CheckOutExportExcelResponse.class);
+        List<String> resultList = nativeQueryJoin.getResultList();
+//        List<String> stringList = new ArrayList<>();
+//        for (Object[] objArray : resultList) {
+//            StringBuilder stringBuilder = new StringBuilder();
+//            for (int i = 0; i < objArray.length; i++) {
+//                stringBuilder.append(objArray[i].toString());
+//                if (i < objArray.length - 1) {
+//                    stringBuilder.append(", ");
+//                }
+//            }
+//            stringList.add(stringBuilder.toString());
+//        }
+        return resultList;
     }
 
-    private static Map<String, Object> getStringObjectMap(SearchAttendanceRequest searchAttendanceRequest, StringBuilder sqlSelect) {
+    private static Map<String, Object> getStringObjectMap(SearchAttendanceRequest
+                                                                  searchAttendanceRequest, StringBuilder sqlSelect) {
         Map<String, Object> map = new HashMap<>();
         if (!DataUtils.isNullOrEmpty(searchAttendanceRequest.getEmployeeId())) {
             sqlSelect.append("  and (:employeeId IS NULL OR at.employee_id = :employeeId)");
@@ -258,7 +273,7 @@ public class AttendanceRepositoryImpl implements AttendanceRepositoryCustom {
 //        return map;
 //    }
 
-    private void createTemporaryTable(Date workingDay){
+    private void createTemporaryTable(Date workingDay) {
         StringBuilder sqlSelect = new StringBuilder();
         sqlSelect.append("CREATE TEMPORARY TABLE temporary_table (\n" +
                 "    day DATE\n" +
