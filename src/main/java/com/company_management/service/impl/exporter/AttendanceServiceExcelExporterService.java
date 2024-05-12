@@ -22,8 +22,8 @@ public class AttendanceServiceExcelExporterService extends AbstractExporter {
 
     public void writeDataLines(XSSFWorkbook workbook, XSSFSheet sheet,
                                List<AttendanceExportExcelResponse> attendanceExportExcelResponses) {
-        int rowIndex = 6;
-        XSSFCellStyle cellStyle = workbook.createCellStyle();
+        int rowIndex = 5;
+        CellStyle cellStyle = workbook.createCellStyle();
         cellStyle.setWrapText(true);
         cellStyle.setBorderTop(BorderStyle.THIN);
         cellStyle.setBorderBottom(BorderStyle.THIN);
@@ -35,7 +35,6 @@ public class AttendanceServiceExcelExporterService extends AbstractExporter {
         cellStyle.setAlignment(HorizontalAlignment.CENTER);
         cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
 
-        XSSFRow rowTG = null;
         for (AttendanceExportExcelResponse item : attendanceExportExcelResponses){
             XSSFRow row = sheet.createRow(rowIndex);
             String stringIndex = String.valueOf(item.getIndex());
@@ -61,10 +60,28 @@ public class AttendanceServiceExcelExporterService extends AbstractExporter {
                 createCell(rowTwo, columIndexOut, itemCheckOut, cellStyle);
                 columIndexOut++;
             }
-
-
+            sheet.addMergedRegion(new CellRangeAddress(rowIndex-1, rowIndex, 0, 0));
+            sheet.addMergedRegion(new CellRangeAddress(rowIndex-1, rowIndex, 1, 1));
+            sheet.addMergedRegion(new CellRangeAddress(rowIndex-1, rowIndex, 2, 2));
+            sheet.addMergedRegion(new CellRangeAddress(rowIndex-1, rowIndex, 35, 35));
+            sheet.addMergedRegion(new CellRangeAddress(rowIndex-1, rowIndex, 36, 36));
+            sheet.addMergedRegion(new CellRangeAddress(rowIndex-1, rowIndex, 37, 37));
+            sheet.addMergedRegion(new CellRangeAddress(rowIndex-1, rowIndex, 38, 38));
+            sheet.addMergedRegion(new CellRangeAddress(rowIndex-1, rowIndex, 39, 39));
             rowIndex++;
         }
+
+        rowIndex++;
+        XSSFRow rowThree = sheet.createRow(rowIndex);
+        createCell(rowThree, 3, "Ghi chú");
+        rowIndex++;
+        XSSFRow rowFour = sheet.createRow(rowIndex);
+        createCell(rowFour, 3, "V: Vắng(Không chấm công)");
+        sheet.addMergedRegion(new CellRangeAddress(rowIndex, rowIndex, 3, 5));
+        rowIndex++;
+        XSSFRow rowThur = sheet.createRow(rowIndex);
+        createCell(rowThur, 3, "off: Nghỉ thứ 7, chủ nhật");
+        sheet.addMergedRegion(new CellRangeAddress(rowIndex, rowIndex, 3, 5));
 
         setWidthOfColumns(sheet);
     }
@@ -115,7 +132,9 @@ public class AttendanceServiceExcelExporterService extends AbstractExporter {
 
     public void writeHeaderLines(XSSFWorkbook workbook, XSSFSheet sheet,
                                  List<AttendanceExportExcelResponse> attendanceExportExcelResponses,
-                                 int daysInMonth) {
+                                 int daysInMonth,
+                                 int month,
+                                 int year) {
         XSSFCellStyle cellStyle = workbook.createCellStyle();
         cellStyle.setWrapText(true);
         cellStyle.setBorderTop(BorderStyle.THIN);
@@ -170,7 +189,9 @@ public class AttendanceServiceExcelExporterService extends AbstractExporter {
         row4.setHeightInPoints(Constants.HEADER_HEIGHT);
         createCell(row1, 0, "BẢNG THỐNG KÊ CHẤM CÔNG", cellStyle);
         createCell(row2, 0, "Tháng");
+        createCell(row2, 1, String.valueOf(month), cellStyle);
         createCell(row3, 0, "Năm");
+        createCell(row3, 1, String.valueOf(year), cellStyle);
         createCell(row4, 0, "STT", cellStyle2);
         createCell(row4, 1, "Mã nhân viên", cellStyle2);
         createCell(row4, 2, "Tên nhân viên", cellStyle2);

@@ -211,6 +211,8 @@ public class AttendanceServiceImpl implements AttendanceService {
         }
         try {
             serviceExcelExporterService.export(
+                    month,
+                    year,
                     daysInMonth,
                     attendanceExportExcelResponses,
                     response

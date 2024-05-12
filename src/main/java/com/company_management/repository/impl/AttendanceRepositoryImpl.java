@@ -168,7 +168,10 @@ public class AttendanceRepositoryImpl implements AttendanceRepositoryCustom {
     public List<String> listCheckIn(Long employeeId) {
         StringBuilder sqlSelectJoin = new StringBuilder();
         sqlSelectJoin.append("SELECT \n" +
-                "    COALESCE(DATE_FORMAT(attendance.check_in_time, '%H:%i'), 'V') AS checkIn\n" +
+                "        CASE\n" +
+                "        WHEN DAYOFWEEK(temporary_table.day) IN (1, 7) THEN 'off' \n" +
+                "        ELSE COALESCE(DATE_FORMAT(attendance.check_in_time, '%H:%i'), 'V')\n" +
+                "    END AS checkIn\n" +
                 "FROM\n" +
                 "    temporary_table\n" +
                 "        LEFT JOIN\n" +
@@ -205,7 +208,10 @@ public class AttendanceRepositoryImpl implements AttendanceRepositoryCustom {
     public List<String> listCheckOut(Long employeeId) {
         StringBuilder sqlSelectJoin = new StringBuilder();
         sqlSelectJoin.append("SELECT \n" +
-                "    COALESCE(DATE_FORMAT(attendance.check_out_time, '%H:%i'), 'V') AS checkOut\n" +
+                "        CASE\n" +
+                "        WHEN DAYOFWEEK(temporary_table.day) IN (1, 7) THEN 'off'\n" +
+                "        ELSE COALESCE(DATE_FORMAT(attendance.check_out_time, '%H:%i'), 'V')\n" +
+                "    END AS checkOut\n" +
                 "FROM\n" +
                 "    temporary_table\n" +
                 "        LEFT JOIN\n" +
