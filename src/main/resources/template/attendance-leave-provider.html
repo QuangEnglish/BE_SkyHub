@@ -2,17 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
 
-<p style="font-size: 20px; color: white; background-color: cornflowerblue; padding-left: 20px;">Thông báo đơn xin nghỉ phép</p>
-<p  th:text="'Kính gửi: ' + ${reviewerName}"></p>
+<p style="font-size: 20px; color: white; background-color: cornflowerblue; padding-left: 20px; width: 300px;">Thông báo đơn xin nghỉ phép</p>
+<p style="font-weight: bold;" th:text="'Kính gửi: ' + ${reviewerName}"></p>
 
 <table style="border-collapse: collapse; border: 1px black;">
     <tr>
         <td style="padding: 10px; border: 1px solid #ccc;">Người gửi đơn</td>
         <td style="padding: 10px; border: 1px solid #ccc;" th:text="${employeeName}"></td>
-    </tr>
-    <tr>
-        <td style="padding: 10px; border: 1px solid #ccc;">Người theo dõi</td>
-        <td style="padding: 10px; border: 1px solid #ccc;" th:text="${trackerName}"></td>
     </tr>
     <tr>
         <td style="padding: 10px; border: 1px solid #ccc;">Loại nghỉ phép</td>
@@ -34,7 +30,16 @@
         <td style="padding: 10px; border: 1px solid #ccc;">Nội dung</td>
         <td style="padding: 10px; border: 1px solid #ccc;" th:text="${description}"></td>
     </tr>
+    <tr>
+        <td style="padding: 10px; border: 1px solid #ccc;">Người phê duyệt</td>
+        <td style="padding: 10px; border: 1px solid #ccc;" th:text="${reviewerName}"></td>
+    </tr>
+    <tr>
+        <td style="padding: 10px; border: 1px solid #ccc;">Người theo dõi</td>
+        <td style="padding: 10px; border: 1px solid #ccc;" th:text="${trackerName}"></td>
+    </tr>
 </table>
+<p></p>
 <p>Trân trọng!</p>
 
 </body>

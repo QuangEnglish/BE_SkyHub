@@ -85,8 +85,8 @@ public class AttendanceServiceImpl implements AttendanceService {
                     () -> new AppException("ERR01", "Không tìm thấy tài khoản này")
             );
 
-            Date checkOutTime = attendanceDTO.getCheckOutTime();
-            Date checkInTime = attendance.getCheckInTime();
+            Date checkOutTime = toNearestWholeHour(attendanceDTO.getCheckOutTime());
+            Date checkInTime = toNearestWholeHour(attendance.getCheckInTime());
             LocalDateTime checkOutLocalDateTime = LocalDateTime.ofInstant(checkOutTime.toInstant(), ZoneId.systemDefault());
             LocalDateTime checkInLocalDateTime = LocalDateTime.ofInstant(checkInTime.toInstant(), ZoneId.systemDefault());
 

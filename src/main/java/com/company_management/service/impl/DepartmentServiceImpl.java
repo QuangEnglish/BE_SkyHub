@@ -5,6 +5,8 @@ import com.company_management.model.dto.DepartmentDTO;
 import com.company_management.model.entity.Department;
 import com.company_management.model.mapper.DepartmentMapper;
 import com.company_management.model.request.SearchDepartmentRequest;
+import com.company_management.model.response.StatisticalDepartmentResponse;
+import com.company_management.model.response.StatisticalHeaderResponse;
 import com.company_management.repository.DepartmentRepository;
 import com.company_management.service.DepartmentService;
 import com.company_management.utils.CommonUtils;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -90,6 +93,32 @@ public class DepartmentServiceImpl implements DepartmentService {
     public DepartmentDTO detailDepartment(Long id) {
         Department department = departmentRepository.findById(id).orElseThrow(() -> new AppException("ERR01", "Không tìm thấy phòng ban!"));
         return departmentMapper.toDto(department);
+    }
+
+    @Override
+    public List<StatisticalDepartmentResponse> getStatisticalDepartment() {
+        List<Object[]> statisticalDepartment = departmentRepository.getStatisticalDepartment();
+        return DataUtils.convertListObjectsToClass(Arrays.asList("name", "value"),
+                statisticalDepartment,
+                StatisticalDepartmentResponse.class);
+    }
+
+    @Override
+    public StatisticalHeaderResponse getStatisticalHeader(Long employeeId) {
+        StatisticalHeaderResponse statisticalHeaderResponse = new StatisticalHeaderResponse();
+        try {
+            statisticalHeaderResponse.setTotalEmployee(departmentRepository.getStatisticalTotalEmployee());
+            statisticalHeaderResponse.setTotalBirthDayMonth(departmentRepository.getStatisticalTotalBirthDayMonth());
+            statisticalHeaderResponse.setTotalLateWork(departmentRepository.getStatisticalTotalLateWork(employeeId));
+            statisticalHeaderResponse.setTotalLeaveWork(departmentRepository.getStatisticalTotalLeaveWork(employeeId));
+        } catch (Exception e) {
+            e.printStackTrace(); // In stack trace để ghi nhận lỗi vào log
+            statisticalHeaderResponse.setTotalEmployee(0L);
+            statisticalHeaderResponse.setTotalBirthDayMonth(0L);
+            statisticalHeaderResponse.setTotalLateWork(0L);
+            statisticalHeaderResponse.setTotalLeaveWork(0L);
+        }
+        return statisticalHeaderResponse;
     }
 
 

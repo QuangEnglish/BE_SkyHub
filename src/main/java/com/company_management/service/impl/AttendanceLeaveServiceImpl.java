@@ -127,6 +127,9 @@ public class AttendanceLeaveServiceImpl implements AttendanceLeaveService {
             if(!DataUtils.isNullOrEmpty(attendanceLeaveDTO.getEndDay())){
                 attendanceLeave.setEndDay(attendanceLeaveDTO.getEndDay());
             }
+            if(!DataUtils.isNullOrEmpty(attendanceLeaveDTO.getTotalTime())){
+                attendanceLeave.setTotalTime(attendanceLeaveDTO.getTotalTime());
+            }
             if(!DataUtils.isNullOrEmpty(attendanceLeaveDTO.getIsActive())){
                 attendanceLeave.setIsActive(attendanceLeaveDTO.getIsActive());
             }

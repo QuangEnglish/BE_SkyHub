@@ -2,8 +2,12 @@ package com.company_management.service;
 
 import com.company_management.model.dto.DepartmentDTO;
 import com.company_management.model.request.SearchDepartmentRequest;
+import com.company_management.model.response.StatisticalDepartmentResponse;
+import com.company_management.model.response.StatisticalHeaderResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 public interface DepartmentService {
 
@@ -16,4 +20,8 @@ public interface DepartmentService {
     void deleteDepartment(Long id);
 
     DepartmentDTO detailDepartment(Long id);
+
+    List<StatisticalDepartmentResponse> getStatisticalDepartment();
+
+    StatisticalHeaderResponse getStatisticalHeader(Long employeeId);
 }

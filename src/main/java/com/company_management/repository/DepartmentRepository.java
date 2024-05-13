@@ -40,4 +40,44 @@ public interface DepartmentRepository extends JpaRepository<Department, Long> {
     @Modifying
     @Query(value = "update Department u set u.isActive = 0, u.updatedDate = now(), u.updatedUser = :user where u.id = :id and u.isActive = 1")
     int deleteById(Long id, Long user);
+
+    @Query(value = """
+            select de.department_name as name, COUNT(ud.id) as vale
+                  from department de
+                  left join user_detail ud
+                  on de.id = ud.department_id
+                  group by de.department_name; 
+            """, nativeQuery = true)
+    List<Object[]> getStatisticalDepartment();
+
+    @Query(value = """
+            select count(id) as totalEmployee
+            from user_detail ud
+                        """, nativeQuery = true)
+    Long getStatisticalTotalEmployee();
+
+
+    @Query(value = """
+            SELECT COUNT(*) AS totalEmployees
+            FROM user_detail
+            WHERE MONTH(birthday) = MONTH(CURRENT_DATE);
+                                    """, nativeQuery = true)
+    Long getStatisticalTotalBirthDayMonth();
+
+    @Query(value = "select COUNT(at.totalPenalty) as totalLateWork\n" +
+            "from UserDetail ud\n" +
+            "left join  Attendance at\n" +
+            "on ud.id = at.employeeId\n" +
+            "where (:employeeId is null or ud.id = :employeeId)\n" +
+            "and MONTH(at.workingDay) = MONTH(CURRENT_DATE)")
+    Long getStatisticalTotalLateWork(Long employeeId);
+
+    @Query(value = "SELECT COALESCE(SUM(al.totalTime), 0) AS  totalLeaveWork\n" +
+            "from UserDetail ud\n" +
+            "         left join AttendanceLeave al\n" +
+            "                   on ud.id = al.employeeId\n" +
+            "WHERE MONTH(al.startDay) = MONTH(CURRENT_DATE)\n" +
+            "  and  (:employeeId is null or ud.id = :employeeId)")
+    Long getStatisticalTotalLeaveWork(Long employeeId);
+
 }
