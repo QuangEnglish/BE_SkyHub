@@ -21,7 +21,7 @@ public class ScheduledTasks {
         this.employeeService = employeeService;
     }
 
-    @Scheduled(cron = "0 0 11,12,13 * * *")
+    @Scheduled(cron = "0 0 6,23 * * *")
     public void updateEmployeeStatusTask() {
         log.info("Update lại isActive userDetail");
         employeeService.updateEmployeeStatus();

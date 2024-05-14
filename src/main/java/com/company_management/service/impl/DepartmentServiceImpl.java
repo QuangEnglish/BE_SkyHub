@@ -5,8 +5,10 @@ import com.company_management.model.dto.DepartmentDTO;
 import com.company_management.model.entity.Department;
 import com.company_management.model.mapper.DepartmentMapper;
 import com.company_management.model.request.SearchDepartmentRequest;
+import com.company_management.model.response.StatisticalContractResponse;
 import com.company_management.model.response.StatisticalDepartmentResponse;
 import com.company_management.model.response.StatisticalHeaderResponse;
+import com.company_management.repository.ContractRepository;
 import com.company_management.repository.DepartmentRepository;
 import com.company_management.service.DepartmentService;
 import com.company_management.utils.CommonUtils;
@@ -29,6 +31,8 @@ import java.util.Optional;
 public class DepartmentServiceImpl implements DepartmentService {
 
     private final DepartmentRepository departmentRepository;
+
+    private final ContractRepository contractRepository;
 
     private final DepartmentMapper departmentMapper;
 
@@ -101,6 +105,14 @@ public class DepartmentServiceImpl implements DepartmentService {
         return DataUtils.convertListObjectsToClass(Arrays.asList("name", "value"),
                 statisticalDepartment,
                 StatisticalDepartmentResponse.class);
+    }
+
+    @Override
+    public List<StatisticalContractResponse> getStatisticalContract() {
+        List<Object[]> statisticalContract = contractRepository.getStatisticalContract();
+        return DataUtils.convertListObjectsToClass(Arrays.asList("name", "value"),
+                statisticalContract,
+                StatisticalContractResponse.class);
     }
 
     @Override

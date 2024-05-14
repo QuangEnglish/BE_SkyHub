@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SearchPositionRequest {
 
-    private Integer positionCode;
+    private String positionCode;
     private String positionName;
     private Integer isActive;
 

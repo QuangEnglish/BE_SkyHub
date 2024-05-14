@@ -110,11 +110,11 @@ public class PositionRepositoryImpl implements PositionRepositoryCustom {
     private static Map<String, Object> getStringObjectMap(SearchPositionRequest searchPositionRequest, StringBuilder sqlSelect) {
         Map<String, Object> map = new HashMap<>();
         if (!DataUtils.isNullOrEmpty(searchPositionRequest.getPositionCode())) {
-            sqlSelect.append("  and p.position_code = :positionCode");
+            sqlSelect.append("  and LOWER(p.position_code) LIKE LOWER(CONCAT('%', :positionCode, '%')) ");
             map.put("positionCode", searchPositionRequest.getPositionCode());
         }
         if (!DataUtils.isNullOrEmpty(searchPositionRequest.getPositionName())) {
-            sqlSelect.append("  and p.position_name = :positionName");
+            sqlSelect.append("  and LOWER(p.position_name) LIKE LOWER(CONCAT('%', :positionName, '%')) ");
             map.put("positionName", searchPositionRequest.getPositionName());
         }
         if (!DataUtils.isNullOrEmpty(searchPositionRequest.getIsActive())) {

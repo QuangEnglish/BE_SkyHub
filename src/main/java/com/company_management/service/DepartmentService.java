@@ -2,6 +2,7 @@ package com.company_management.service;
 
 import com.company_management.model.dto.DepartmentDTO;
 import com.company_management.model.request.SearchDepartmentRequest;
+import com.company_management.model.response.StatisticalContractResponse;
 import com.company_management.model.response.StatisticalDepartmentResponse;
 import com.company_management.model.response.StatisticalHeaderResponse;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,7 @@ public interface DepartmentService {
     DepartmentDTO detailDepartment(Long id);
 
     List<StatisticalDepartmentResponse> getStatisticalDepartment();
+    List<StatisticalContractResponse> getStatisticalContract();
 
     StatisticalHeaderResponse getStatisticalHeader(Long employeeId);
 }

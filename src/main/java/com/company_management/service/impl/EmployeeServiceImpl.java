@@ -160,10 +160,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Transactional
     public void createEmployee(MultipartFile avatarFile, UserDetailDTO userDetailDTO) throws IOException {
         log.debug("// Create Employee");
-        UserDetail byEmployeeCode = employeeRepository.findByEmployeeCode(userDetailDTO.getEmployeeCode());
-        if (byEmployeeCode != null) {
-            throw new AppException("ERO01", "Mã nhân viên đã tồn tại");
-        }
+//        UserDetail byEmployeeCode = employeeRepository.findByEmployeeCode(userDetailDTO.getEmployeeCode());
+//        if (byEmployeeCode != null) {
+//            throw new AppException("ERO01", "Mã nhân viên đã tồn tại");
+//        }
         Department department = new Department();
         if (userDetailDTO.getDepartmentId() != null) {
             department = departmentRepository.findById(userDetailDTO.getDepartmentId()).orElseThrow(() ->

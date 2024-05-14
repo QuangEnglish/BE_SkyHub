@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface ContractRepository extends JpaRepository<Contract, Long>, ContractRepositoryCustom {
 
@@ -32,4 +34,31 @@ public interface ContractRepository extends JpaRepository<Contract, Long>, Contr
     @Modifying
     @Query(value = "update Contract c set c.isActive = 0, c.updatedDate = now(), c.updatedUser = :user where c.id = :id and c.isActive = 1")
     int updateById(Long id, Long user);
+
+    @Query(value = """
+            select udct.contract_type as name, count(ctr.id) as value
+            from contract ctr
+            left join (
+                select contract_id, c.contract_type
+                from
+                    contract c left join user_detail_contract udc
+                                         on c.id = udc.contract_id
+                where user_detail_id is not null
+                  and udc.active_date in (select udca.aDate from (select MAX(udc.active_date) as aDate
+                                                                  from
+                                                                      contract c left join user_detail_contract udc
+                                                                                           on c.id = udc.contract_id
+                                                                  where user_detail_id is not null
+                                                                    and udc.is_active =1
+                                                                    and c.is_active = 1
+                                                                  group by  user_detail_id
+                                                                  order by user_detail_id desc) udca)
+                group by  user_detail_id
+            ) as udct
+            on ctr.id = udct.contract_id
+            where udct.contract_type is not null
+            group by udct.contract_type;
+                        """, nativeQuery = true)
+    List<Object[]> getStatisticalContract();
+
 }

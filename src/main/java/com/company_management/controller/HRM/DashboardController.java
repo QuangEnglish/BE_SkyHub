@@ -28,6 +28,11 @@ public class DashboardController {
         return ResultResp.success(ErrorCode.CREATED_OK, departmentService.getStatisticalHeader(employeeId));
     }
 
+    @GetMapping("/statisticalContract/")
+    public ResultResp<Object> getStatisticalContract(){
+        return ResultResp.success(ErrorCode.CREATED_OK, departmentService.getStatisticalContract());
+    }
+
 
 //    @PostMapping(value = "/create")
 //    public ResultResp<Object> create(@ModelAttribute("file") MultipartFile file,
