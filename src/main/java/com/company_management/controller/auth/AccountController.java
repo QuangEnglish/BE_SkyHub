@@ -9,6 +9,7 @@ import com.company_management.model.request.UserCustomEmployeeRequest;
 import com.company_management.model.response.AccountSearchResponse;
 import com.company_management.model.response.PageResponse;
 import com.company_management.service.MenuItemService;
+import com.company_management.service.RoleMenuItemService;
 import com.company_management.service.RoleService;
 import com.company_management.service.UserService;
 import jakarta.validation.Valid;
@@ -28,6 +29,7 @@ public class AccountController {
     private final UserService userService;
     private final RoleService roleService;
     private final MenuItemService menuItemService;
+    private final RoleMenuItemService roleMenuItemService;
 
     @PostMapping("/getAll")
     public ResponseEntity<PageResponse<AccountSearchResponse>> findAll(@RequestBody AccountSearchRequest request,
@@ -50,10 +52,22 @@ public class AccountController {
         return new ResponseEntity<>(menuItemService.getAll(), HttpStatus.OK);
     }
 
-    @PutMapping
+    @PutMapping  //cấp phát tài khoản
     public ResultResp<Object> updateEmployeeAccount(@Valid @RequestBody UserCustomEmployeeRequest userCustomEmployeeRequest){
         userService.editUserCustom(userCustomEmployeeRequest);
         return ResultResp.success(ErrorCode.UPDATED_OK, null);
     }
+
+
+    //cập nhật menuItem cho role
+    @PostMapping("/update-role-menu-item/{roleId}")
+    public ResultResp<Object> updateRoleMenuItem(@PathVariable("roleId") Long roleId,
+                                                 @RequestBody List<Long> menuItemIds) {
+        roleMenuItemService.createOrUpdate(roleId, menuItemIds);
+        return ResultResp.success(ErrorCode.UPDATED_OK, null);
+    }
+
+
+
 
 }

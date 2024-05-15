@@ -1,6 +1,5 @@
 package com.company_management.controller.auth;
 
-import com.company_management.common.ResultResp;
 import com.company_management.model.dto.MenuItemDTO;
 import com.company_management.model.response.BasicResponse;
 import com.company_management.service.MenuItemService;
@@ -25,4 +24,5 @@ public class MenuItemController {
     public ResponseEntity<BasicResponse> updateMenuItem(@RequestBody MenuItemDTO menuItemDTO) {
         return new ResponseEntity<>(menuItemService.updateMenuItem(menuItemDTO), HttpStatus.OK);
     }
+
 }
