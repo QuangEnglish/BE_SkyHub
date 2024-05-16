@@ -27,7 +27,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.ITemplateEngine;
 import org.thymeleaf.context.Context;
 
-import java.security.Principal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -128,19 +127,29 @@ public class AuthenticationService {
                 .toString();
     }
 
+    @Transactional
     public Boolean forgotPassword(String email) {
         UserCustom user =
                 userCustomRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(
-                        "User not found"));
+                        "Tài khoản không tồn tại"));
         user.setForgotPassword(generateCode());
         userCustomRepository.save(user);
+        Map<String, Object> params = LogisticsMailUtils.sendMailToCode(user.getForgotPassword());
+        Context context = new Context();
+        context.setVariables(params);
+        MailRequest mailRequest = MailRequest.builder()
+                .toMail(user.getEmail())
+                .html(true)
+                .title("Công ty cổ phần truyền thông và dịch vụ Nodo")
+                .content(templateEngine.process(MailRequest.CODE_REGISTER_PROVIDER_TEMPLATE, context))
+                .build();
+        emailService.send(mailRequest);
         return true;
     }
 
     public AuthenticationResponse validForgotCode(String forgotCode) {
        UserCustom user =
-               userCustomRepository.findByForgotPassword(forgotCode).orElseThrow(() -> new RuntimeException("User " +
-               "not found!!!"));
+               userCustomRepository.findByForgotPassword(forgotCode).orElseThrow(() -> new RuntimeException("Sai mã xác nhận!"));
         String jwtToken = jwtService.generateToken(user);
         AuthenticationResponse response = new AuthenticationResponse();
         response.setUsername(user.getUser());
@@ -148,12 +157,11 @@ public class AuthenticationService {
         return response;
     }
 
-    public Boolean changePassword(ChangePasswordRequest request, Principal principal) {
+    public Boolean changePassword(ChangePasswordRequest request) {
         UserCustom user =
-                userCustomRepository.findByEmail(principal.getName()).orElseThrow(() -> new RuntimeException("Email " +
-                        "not found!!!"));
+                userCustomRepository.findByEmail(request.getEmail()).orElseThrow(() -> new RuntimeException("Email không tồn tại!"));
         if(!request.getPassword().equals(request.getConfirmPassword())){
-            throw new RuntimeException("Confirm Password not same!!!");
+            throw new RuntimeException("Mật khẩu không khớp!");
         }
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         userCustomRepository.save(user);

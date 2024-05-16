@@ -6,14 +6,12 @@ import com.company_management.model.request.AuthenticationRequest;
 import com.company_management.model.request.ChangePasswordRequest;
 import com.company_management.model.request.RegisterRequest;
 import com.company_management.model.response.AuthenticationResponse;
-import com.company_management.service.AuthenticationService;
 import com.company_management.model.response.BasicResponse;
+import com.company_management.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.security.Principal;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -40,19 +38,19 @@ public class AuthenticationController {
         return new ResponseEntity<>(new BasicResponse(400, "Mã kích hoạt không đúng"), HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping("/forgot-password")
-    public ResponseEntity<Boolean> forgotPassword(@RequestParam("email") String email){
+    @GetMapping("/forgot-password/{email}")
+    public ResponseEntity<Boolean> forgotPassword(@PathVariable String email){
         return new ResponseEntity<>(authenticationService.forgotPassword(email), HttpStatus.OK);
     }
 
-    @PostMapping("/forgot-password/{forgotCode}")
+    @PostMapping("/getForgotCode/{forgotCode}")
     public ResponseEntity<AuthenticationResponse> validForgotCode(@PathVariable String forgotCode){
         return new ResponseEntity<>(authenticationService.validForgotCode(forgotCode), HttpStatus.OK);
     }
 
     @PostMapping("/change-password")
-    public ResponseEntity<BasicResponse> changePassword(@RequestBody ChangePasswordRequest request, Principal principal){
-        if(authenticationService.changePassword(request, principal)){
+    public ResponseEntity<BasicResponse> changePassword(@RequestBody ChangePasswordRequest request){
+        if(authenticationService.changePassword(request)){
             return new ResponseEntity<>(new BasicResponse(200, "Thay đổi mật khẩu thành công"), HttpStatus.OK);
         }
         return new ResponseEntity<>(new BasicResponse(500, "Thay đổi mật khẩu không thành công"), HttpStatus.BAD_REQUEST);
