@@ -22,6 +22,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Optional;
+
 
 @Service
 @RequiredArgsConstructor
@@ -38,6 +41,7 @@ public class UserServiceImpl implements UserService {
     private final ContractMapper contractMapper;
     private final SocialInsuranceMapper socialInsuranceMapper;
     private final WageMapper wageMapper;
+    private final UserCustomRoleRepository userCustomRoleRepository;
 
     @Override
     public PageResponse<UserSearchResponse> searchUser(UserSearchRequest request, Pageable pageable) {
@@ -113,6 +117,24 @@ public class UserServiceImpl implements UserService {
             userCustom.setUserDetailId(userCustomEmployeeRequest.getUserDetailId());
         }
         userCustomRepository.save(userCustom);
+    }
+
+    @Override
+    @Transactional
+    public void updateUserRoles(String email, List<String> roleNames) {
+        Optional<UserCustom> user = userCustomRepository.findByEmail(email);
+        if (user.isEmpty()) {
+            throw new RuntimeException("Email này không tồn tại");
+        }
+
+        // Xóa tất cả các quyền cũ của người dùng
+        userCustomRoleRepository.deleteByUserId(user.get().getId());
+
+        // Thêm các quyền mới cho người dùng
+        for (String roleName : roleNames) {
+            Optional<Role> role = roleRepository.findByRoleName(roleName);
+            role.ifPresent(value -> userCustomRoleRepository.insertUserRole(user.get().getId(), value.getId()));
+        }
     }
 
 }

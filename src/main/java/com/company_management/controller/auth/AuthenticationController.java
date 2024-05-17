@@ -59,4 +59,6 @@ public class AuthenticationController {
     private ResponseEntity<BasicResponse> resendCode(@RequestParam(name = "id") Long id){
         return new ResponseEntity<>(authenticationService.resendVerifyCode(id), HttpStatus.OK);
     }
+
+
 }

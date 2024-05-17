@@ -31,10 +31,16 @@ public class AccountController {
     private final MenuItemService menuItemService;
     private final RoleMenuItemService roleMenuItemService;
 
-    @PostMapping("/getAll")
+    @PostMapping("/getAll")   // lay ra list tai khoan
     public ResponseEntity<PageResponse<AccountSearchResponse>> findAll(@RequestBody AccountSearchRequest request,
                                                                        @PageableDefault Pageable pageable) {
         return new ResponseEntity<>(userService.searchAccount(request, pageable), HttpStatus.OK);
+    }
+
+    @PutMapping("/updateRole/{email}")
+    public ResultResp<Object> updateRole(@PathVariable String email, @RequestBody List<String> roleNames) {
+        userService.updateUserRoles(email, roleNames);
+        return ResultResp.success(null);
     }
 
     @GetMapping("/roles")

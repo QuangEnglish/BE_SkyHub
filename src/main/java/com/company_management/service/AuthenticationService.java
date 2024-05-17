@@ -47,7 +47,7 @@ public class AuthenticationService {
     @Transactional
     public void register(RegisterRequest request){
         UserCustom user = new UserCustom();
-        Role role = roleRepository.findByRoleName(Constants.ROLE.ADMIN).orElseThrow(() -> new AppException("ERR01", "Không tìm thấy Quyền cho Tài khoản"));
+        Role role = roleRepository.findByRoleName(Constants.ROLE.USER).orElseThrow(() -> new AppException("ERR01", "Không tìm thấy Quyền cho Tài khoản"));
         if(userCustomRepository.findByEmail(request.getEmail()).isPresent()){
             throw new AppException("ERR01", "Email đã tồn tại!");
         }
