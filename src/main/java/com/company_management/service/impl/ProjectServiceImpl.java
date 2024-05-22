@@ -5,8 +5,10 @@ import com.company_management.exception.AppException;
 import com.company_management.model.dto.ProjectDTO;
 import com.company_management.model.entity.Project;
 import com.company_management.model.entity.UserDetail;
+import com.company_management.model.entity.UserDetailProject;
 import com.company_management.repository.EmployeeRepository;
 import com.company_management.repository.ProjectRepository;
+import com.company_management.repository.UserDetailProjectRepository;
 import com.company_management.service.ProjectService;
 import com.company_management.utils.DataUtils;
 import lombok.RequiredArgsConstructor;
@@ -22,9 +24,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -33,6 +35,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     private final EmployeeRepository employeeRepository;
     private final ProjectRepository projectRepository;
+    private final UserDetailProjectRepository userDetailProjectRepository;
 
 
     @Value("${upload.path}")
@@ -45,8 +48,16 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public Optional<Project> projectFindById(Long id) {
-        return projectRepository.findById(id);
+    public List<Project> projectFindById(Long id) {
+        List<UserDetailProject> allByUserDetailId = userDetailProjectRepository.findAllByUserDetailId(id);
+        List<Project> lstProjects = new ArrayList<>();
+        allByUserDetailId.forEach(res -> {
+            Project project = projectRepository.findById(res.getProjectId()).orElseThrow(
+                    () -> new AppException("ERR01", "Dự án không tồn tại")
+            );
+            lstProjects.add(project);
+        });
+        return lstProjects;
     }
 
     @Override
@@ -67,11 +78,20 @@ public class ProjectServiceImpl implements ProjectService {
         projectDTO.setTaskNumber(project.getTaskNumber());
         UserDetail userDetail = new UserDetail();
         if (project.getProjectManagerId() != null) {
-            userDetail = employeeRepository.findById(projectDTO.getProjectManagerId()).orElseThrow(() ->
+            userDetail = employeeRepository.findById(project.getProjectManagerId()).orElseThrow(() ->
                     new AppException("ERO01", "Quản lý dự án không tồn tại"));
         }
         projectDTO.setProjectManagerId(userDetail.getId());
         projectDTO.setCustomerAvatar(project.getCustomerAvatar());
+        List<UserDetailProject> allByProjectId = userDetailProjectRepository.findAllByProjectId(id);
+        List<String> lstUserDetail = new ArrayList<>();
+        allByProjectId.forEach(userDetailProject -> {
+            UserDetail getUserDetail = employeeRepository.findById(userDetailProject.getUserDetailId())
+                    .orElseThrow(() -> new AppException("ERR01", "Không tồn tại nhân viên tham gia"));
+
+            lstUserDetail.add(getUserDetail.getEmployeeName() + " - " + getUserDetail.getEmployeeCode());
+        });
+        projectDTO.setEmployees(lstUserDetail);
         return projectDTO;
     }
 
@@ -106,7 +126,21 @@ public class ProjectServiceImpl implements ProjectService {
         Path filePath = Paths.get(this.fileUpload + fileName);
         Files.copy(avatarFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
         project.setCustomerAvatar(fileName);
+        if(projectDTO.getEmployees().isEmpty()){
+            throw new AppException("ERO01", "Số lượng thành viên không hợp lệ");
+        }
         projectRepository.save(project);
+        List<String> collect = projectDTO.getEmployees().stream().map(res -> res.split(" - ")).map(res -> res[1].trim()).toList();
+        for(int i =0; i < collect.size(); i++){
+            UserDetail byEmployeeCode = employeeRepository.findByEmployeeCode(collect.get(i));
+            if(byEmployeeCode == null){
+                throw new AppException("ERO01", "Thành viên không tồn tại");
+            }
+            UserDetailProject userDetailProject = new UserDetailProject();
+            userDetailProject.setProjectId(project.getId());
+            userDetailProject.setUserDetailId(byEmployeeCode.getId());
+            userDetailProjectRepository.save(userDetailProject);
+        }
         log.info("// Lưu dự án thành công!");
     }
 
@@ -159,6 +193,18 @@ public class ProjectServiceImpl implements ProjectService {
             }
         }
         projectRepository.save(project);
+        userDetailProjectRepository.deleteByProjectId(project.getId());
+        List<String> collect = projectDTO.getEmployees().stream().map(res -> res.split(" - ")).map(res -> res[1].trim()).toList();
+        for(int i =0; i < collect.size(); i++){
+            UserDetail byEmployeeCode = employeeRepository.findByEmployeeCode(collect.get(i));
+            if(byEmployeeCode == null){
+                throw new AppException("ERO01", "Thành viên không tồn tại");
+            }
+            UserDetailProject userDetailProject = new UserDetailProject();
+            userDetailProject.setProjectId(project.getId());
+            userDetailProject.setUserDetailId(byEmployeeCode.getId());
+            userDetailProjectRepository.save(userDetailProject);
+        }
         log.info("// cập nhật dự án thành công!");
     }
 

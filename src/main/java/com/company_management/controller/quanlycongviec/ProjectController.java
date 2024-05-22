@@ -3,7 +3,6 @@ package com.company_management.controller.quanlycongviec;
 import com.company_management.common.ErrorCode;
 import com.company_management.common.ResultResp;
 import com.company_management.model.dto.ProjectDTO;
-import com.company_management.model.entity.Project;
 import com.company_management.service.ProjectService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +17,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -39,13 +37,9 @@ public class ProjectController {
     }
 
     @PostMapping("/search")
-    public ResultResp<Object> getAllProject(@RequestParam(required = false) Long id){
-        if (id != null) {
-            Optional<Project> project = projectService.projectFindById(id);
-            if(project.isPresent()){
-                return ResultResp.success(project);
-            }
-            return ResultResp.success(null);
+    public ResultResp<Object> getAllProject(@RequestParam(value = "userDetailId", required = false) Long userDetailId){
+        if (userDetailId != null) {
+            return ResultResp.success(projectService.projectFindById(userDetailId));
         }
         return ResultResp.success(projectService.listProjectFindAll());
     }

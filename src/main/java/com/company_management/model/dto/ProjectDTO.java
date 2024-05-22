@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -25,4 +26,5 @@ public class ProjectDTO {
     private Double etimate;  // so gio du kien
     private Double timesheet;  // so gio thuc hien dang đc khai bao
     private Long taskNumber;  // so luong task
+    private List<String> employees;   //danh sách nhân viên tham gia
 }
