@@ -2,12 +2,16 @@ package com.company_management.service.impl;
 
 
 import com.company_management.common.Constants;
+import com.company_management.common.enums.TaskStatusType;
 import com.company_management.exception.AppException;
 import com.company_management.model.dto.TaskDTO;
+import com.company_management.model.entity.Project;
 import com.company_management.model.entity.Task;
 import com.company_management.model.entity.TaskAssignment;
 import com.company_management.model.entity.UserDetail;
+import com.company_management.model.response.TaskResponse;
 import com.company_management.repository.EmployeeRepository;
+import com.company_management.repository.ProjectRepository;
 import com.company_management.repository.TaskAssignRepository;
 import com.company_management.repository.TaskRepository;
 import com.company_management.service.TaskService;
@@ -18,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 @Service
@@ -28,23 +33,91 @@ public class TaskServiceImpl implements TaskService {
     private final EmployeeRepository employeeRepository;
     private final TaskRepository taskRepository;
     private final TaskAssignRepository taskAssignRepository;
+    private final ProjectRepository projectRepository;
 
     @Override
-    public List<Task> listTaskFindAll() {
-        return taskRepository.findAll();
+    public List<TaskResponse> listTaskFindAll() {
+//        return taskRepository.findAll();
+        return null;
     }
 
     @Override
-    public List<Task> listTaskFindById(Long id) {
-        List<TaskAssignment> lstTaskAssignment = taskAssignRepository.findAllByEmployeeId(id);
-        List<Task> lstTask = new ArrayList<>();
-        lstTaskAssignment.forEach(res -> {
-            Task task = taskRepository.findById(res.getTaskId()).orElseThrow(
-                    () -> new AppException("ERR01", "Task không tồn tại")
-            );
-            lstTask.add(task);
-        });
-        return lstTask;
+    public List<TaskResponse> listTaskFindByEmployeeAndProject(Long userDetailId, Long projectID) {
+        List<TaskResponse> lstResult = new ArrayList<>();
+        lstResult.add(taskResponse(userDetailId, projectID, TaskStatusType.MOI.getTypeName(), TaskStatusType.MOI.getType()));
+        lstResult.add(taskResponse(userDetailId, projectID, TaskStatusType.DANGXULY.getTypeName(), TaskStatusType.DANGXULY.getType()));
+        lstResult.add(taskResponse(userDetailId, projectID, TaskStatusType.REVIEW.getTypeName(), TaskStatusType.REVIEW.getType()));
+        lstResult.add(taskResponse(userDetailId, projectID, TaskStatusType.REOPEN.getTypeName(), TaskStatusType.REOPEN.getType()));
+        lstResult.add(taskResponse(userDetailId, projectID, TaskStatusType.HOANTHANH.getTypeName(), TaskStatusType.HOANTHANH.getType()));
+        return lstResult;
+    }
+
+    @Override
+    public List<TaskDTO> listTaskDtoByEmployeeAndProject(Long userDetailId, Long projectID) {
+        List<Task> allByProjectId= taskRepository.findAllByProjectId(projectID);
+        List<TaskDTO> lstTaskDto = allByProjectId.stream().map(
+                res -> {
+                    TaskDTO taskDTO = new TaskDTO();
+                    taskDTO.setId(res.getId());
+                    taskDTO.setTaskCode(res.getTaskCode());
+                    taskDTO.setTaskName(res.getTaskName());
+                    taskDTO.setTaskDescription(res.getTaskDescription());
+                    taskDTO.setTaskStatus(res.getTaskStatus());
+                    taskDTO.setTaskStatusName(TaskStatusType.getNameByType(res.getTaskStatus()));
+                    taskDTO.setStartDay(res.getStartDay());
+                    taskDTO.setEndDay(res.getEndDay());
+                    taskDTO.setProjectId(res.getProjectId());
+                    Project project = projectRepository.findById(res.getProjectId()).orElseThrow(() -> new AppException("ERR01", "Dự án không tồn tại"));
+                    taskDTO.setProjectName(project.getProjectName());
+                    taskDTO.setFollowId(res.getFollowId());
+                    taskDTO.setPriority(res.getPriority());
+                    return taskDTO;
+                }
+        ).toList();
+        List<TaskDTO> collect = new ArrayList<>();
+        List<TaskAssignment> allByEmployeeId = taskAssignRepository.findAllByEmployeeId(userDetailId);
+        allByEmployeeId.forEach(
+                tak ->  {
+                    List<TaskDTO> filteredList = lstTaskDto.stream().filter(res -> Objects.equals(res.getId(), tak.getTaskId())).toList();
+                    collect.addAll(filteredList);
+                }
+        );
+        return collect;
+    }
+
+    public TaskResponse taskResponse(Long userDetailId, Long projectID, String taskStatusName, int taskStatusId){
+        List<Task> allByProjectIdAndTaskStatus = taskRepository.findAllByProjectIdAndTaskStatus(projectID, taskStatusId);
+        List<TaskDTO> lstTaskDto = allByProjectIdAndTaskStatus.stream().map(
+                res -> {
+                    TaskDTO taskDTO = new TaskDTO();
+                    taskDTO.setId(res.getId());
+                    taskDTO.setTaskCode(res.getTaskCode());
+                    taskDTO.setTaskName(res.getTaskName());
+                    taskDTO.setTaskDescription(res.getTaskDescription());
+                    taskDTO.setTaskStatus(res.getTaskStatus());
+                    taskDTO.setTaskStatusName(taskStatusName);
+                    taskDTO.setStartDay(res.getStartDay());
+                    taskDTO.setEndDay(res.getEndDay());
+                    taskDTO.setProjectId(res.getProjectId());
+                    Project project = projectRepository.findById(res.getProjectId()).orElseThrow(() -> new AppException("ERR01", "Dự án không tồn tại"));
+                    taskDTO.setProjectName(project.getProjectName());
+                    taskDTO.setFollowId(res.getFollowId());
+                    taskDTO.setPriority(res.getPriority());
+                    return taskDTO;
+                }
+        ).toList();
+        List<TaskDTO> collect = new ArrayList<>();
+        List<TaskAssignment> allByEmployeeId = taskAssignRepository.findAllByEmployeeId(userDetailId);
+        allByEmployeeId.forEach(
+              tak ->  {
+                  List<TaskDTO> filteredList = lstTaskDto.stream().filter(res -> Objects.equals(res.getId(), tak.getTaskId())).toList();
+                  collect.addAll(filteredList);
+              }
+        );
+        TaskResponse taskResponse = new TaskResponse();
+        taskResponse.setName(taskStatusName);
+        taskResponse.setTaskForm(collect);
+        return taskResponse;
     }
 
     @Override

@@ -35,9 +35,11 @@ public class TaskController {
     }
 
     @PostMapping("/search")
-    public ResultResp<Object> getAllTask(@RequestParam(value = "userDetailId", required = false) Long userDetailId){
-        if (userDetailId != null) {
-            return ResultResp.success(taskService.listTaskFindById(userDetailId));
+    public ResultResp<Object> getAllTask(@RequestParam(value = "userDetailId", required = false) Long userDetailId,
+                                         @RequestParam(value = "projectId", required = false) Long projectId){
+        if (userDetailId != null && projectId != null) {
+            return ResultResp.success(taskService.listTaskFindByEmployeeAndProject(userDetailId, projectId));
+//            return ResultResp.success(taskService.listTaskDtoByEmployeeAndProject(userDetailId, projectId));
         }
         return ResultResp.success(taskService.listTaskFindAll());
     }
