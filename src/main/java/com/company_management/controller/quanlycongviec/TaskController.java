@@ -67,6 +67,17 @@ public class TaskController {
         return ResultResp.success(ErrorCode.UPDATED_OK, null);
     }
 
+    @PostMapping("/updateTaskStatus/{id}")
+    public ResultResp<Object> deleteDepartment(@PathVariable("id") Long id,
+                                               @RequestParam("taskStatus") int taskStatus) {
+        try{
+            taskService.updateTaskStatus(id, taskStatus);
+            return ResultResp.success(ErrorCode.UPDATED_STATUS, null);
+        }catch (Exception ex){
+            return ResultResp.badRequest(ErrorCode.UPDATED_FAIL);
+        }
+    }
+
 
 
 }

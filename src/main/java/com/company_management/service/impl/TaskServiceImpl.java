@@ -15,10 +15,12 @@ import com.company_management.repository.ProjectRepository;
 import com.company_management.repository.TaskAssignRepository;
 import com.company_management.repository.TaskRepository;
 import com.company_management.service.TaskService;
+import com.company_management.utils.CommonUtils;
 import com.company_management.utils.DataUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -187,6 +189,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    @Transactional
     public void updateTask(TaskDTO taskDTO) {
         Task task = taskRepository.findById(taskDTO.getId()).orElseThrow(
                 () -> new AppException("ERR01", "Không tìm thấy task này!"));
@@ -224,5 +227,14 @@ public class TaskServiceImpl implements TaskService {
             taskAssignRepository.save(taskAssignment);
         }
         log.info("// cập nhật task thành công!");
+    }
+
+    @Override
+    @Transactional
+    public void updateTaskStatus(Long id, int taskStatus) {
+        log.debug("// Cập nhật trạng thái: {}", id);
+        if (taskRepository.updateStatusById(id, taskStatus, CommonUtils.getUserLoginName()) <= 0) {
+            throw new AppException("ERR01", "Không tìm thấy task công việc này!");
+        }
     }
 }

@@ -17,6 +17,7 @@ public class Constants {
     public static final String CREATED_OK = "Thêm mới thành công!";
 
     public static final String UPDATED_OK = "Cập nhật thành công!";
+    public static final String UPDATED_STATUS = "Chuyển trạng thái thành công!";
     public static final String ADD_OK = "Thêm mới thành công!";
 
     public static final String CREATED_FAIL = "Đã xảy ra lỗi, không thể thêm mới bản ghi!";

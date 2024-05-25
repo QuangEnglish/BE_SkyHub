@@ -18,6 +18,8 @@ public interface TaskService {
 
     void updateTask(TaskDTO taskDTO);
 
+    void updateTaskStatus(Long id, int taskStatus);
+
 
 
 }

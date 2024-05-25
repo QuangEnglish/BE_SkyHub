@@ -8,6 +8,7 @@ import com.company_management.model.entity.UserDetail;
 import com.company_management.model.entity.UserDetailProject;
 import com.company_management.repository.EmployeeRepository;
 import com.company_management.repository.ProjectRepository;
+import com.company_management.repository.TaskRepository;
 import com.company_management.repository.UserDetailProjectRepository;
 import com.company_management.service.ProjectService;
 import com.company_management.utils.DataUtils;
@@ -35,6 +36,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     private final EmployeeRepository employeeRepository;
     private final ProjectRepository projectRepository;
+    private final TaskRepository taskRepository;
     private final UserDetailProjectRepository userDetailProjectRepository;
 
 
@@ -44,7 +46,12 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public List<Project> listProjectFindAll() {
-        return projectRepository.findAll();
+        List<Project> all = projectRepository.findAll();
+        List<Project> collect = all.stream().peek(res -> {
+            Long l = taskRepository.countTasksByProjectId(res.getId());
+            res.setTaskNumber(l);
+        }).toList();
+        return collect;
     }
 
     @Override

@@ -17,6 +17,7 @@ public class ErrorCode {
 
     public static final ObjectError CREATED_OK = new ObjectError("OK", Constants.CREATED_OK);
     public static final ObjectError UPDATED_OK = new ObjectError("OK", Constants.UPDATED_OK);
+    public static final ObjectError UPDATED_STATUS = new ObjectError("OK", Constants.UPDATED_STATUS);
     public static final ObjectError DELETED_OK = new ObjectError("OK", Constants.DELETED_OK);
 
     public static final ObjectError ADD_OK = new ObjectError("OK", Constants.ADD_OK);
