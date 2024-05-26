@@ -38,9 +38,8 @@ public class TaskServiceImpl implements TaskService {
     private final ProjectRepository projectRepository;
 
     @Override
-    public List<TaskResponse> listTaskFindAll() {
-//        return taskRepository.findAll();
-        return null;
+    public List<Task> listTaskFindAll() {
+        return taskRepository.findAll();
     }
 
     @Override
@@ -73,6 +72,8 @@ public class TaskServiceImpl implements TaskService {
                     taskDTO.setProjectName(project.getProjectName());
                     taskDTO.setFollowId(res.getFollowId());
                     taskDTO.setPriority(res.getPriority());
+                    taskDTO.setDuration(res.getDuration());
+                    taskDTO.setCommunication(res.getCommunication());
                     return taskDTO;
                 }
         ).toList();
@@ -105,6 +106,8 @@ public class TaskServiceImpl implements TaskService {
                     taskDTO.setProjectName(project.getProjectName());
                     taskDTO.setFollowId(res.getFollowId());
                     taskDTO.setPriority(res.getPriority());
+                    taskDTO.setDuration(res.getDuration());
+                    taskDTO.setCommunication(res.getCommunication());
                     return taskDTO;
                 }
         ).toList();
@@ -136,6 +139,8 @@ public class TaskServiceImpl implements TaskService {
         taskDTO.setEndDay(task.getEndDay());
         taskDTO.setProjectId(task.getProjectId());
         taskDTO.setPriority(task.getPriority());
+        taskDTO.setDuration(task.getDuration());
+        taskDTO.setCommunication(task.getCommunication());
         UserDetail userDetail = new UserDetail();
         if (task.getFollowId() != null) {
             userDetail = employeeRepository.findById(task.getFollowId()).orElseThrow(() ->
@@ -172,6 +177,8 @@ public class TaskServiceImpl implements TaskService {
         task.setProjectId(taskDTO.getProjectId());
         task.setFollowId(userDetail.getId());
         task.setPriority(taskDTO.getPriority());
+        task.setDuration(taskDTO.getDuration());
+        task.setCommunication(taskDTO.getCommunication());
         task.setIsActive(Constants.STATUS_ACTIVE_INT);
         taskRepository.save(task);
         List<String> collect = taskDTO.getEmployees().stream().map(res -> res.split(" - ")).map(res -> res[1].trim()).toList();
@@ -185,6 +192,10 @@ public class TaskServiceImpl implements TaskService {
             taskAssignment.setEmployeeId(byEmployeeCode.getId());
             taskAssignRepository.save(taskAssignment);
         }
+        Double numberDuration = taskRepository.countDurationByProjectId(task.getProjectId());
+        Project project = projectRepository.findById(task.getProjectId()).orElseThrow(() -> new AppException("ERR01", "Dự án không tồn tại"));
+        project.setEtimate(numberDuration);
+        projectRepository.save(project);
         log.info("// Lưu task thành công!");
     }
 
@@ -212,7 +223,11 @@ public class TaskServiceImpl implements TaskService {
         if (!DataUtils.isNullOrEmpty(taskDTO.getEndDay())) {
             task.setEndDay(taskDTO.getEndDay());
         }
+        task.setDuration(taskDTO.getDuration());
         task.setPriority(taskDTO.getPriority());
+        if (!DataUtils.isNullOrEmpty(taskDTO.getCommunication())) {
+            task.setCommunication(taskDTO.getCommunication());
+        }
         taskRepository.save(task);
         taskAssignRepository.deleteByTaskId(task.getId());
         List<String> collect = taskDTO.getEmployees().stream().map(res -> res.split(" - ")).map(res -> res[1].trim()).toList();
@@ -226,6 +241,10 @@ public class TaskServiceImpl implements TaskService {
             taskAssignment.setEmployeeId(byEmployeeCode.getId());
             taskAssignRepository.save(taskAssignment);
         }
+        Double numberDuration = taskRepository.countDurationByProjectId(task.getProjectId());
+        Project project = projectRepository.findById(task.getProjectId()).orElseThrow(() -> new AppException("ERR01", "Dự án không tồn tại"));
+        project.setEtimate(numberDuration);
+        projectRepository.save(project);
         log.info("// cập nhật task thành công!");
     }
 

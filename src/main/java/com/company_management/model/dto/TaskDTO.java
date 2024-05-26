@@ -37,5 +37,7 @@ public class TaskDTO {
     @NotNull(message = "Không được để trống độ ưu tiên")
     private Integer priority;  //do uu tien
     private String priorityName;  //do uu tien
+    private double duration;
+    private String communication;
     private List<String> employees;   //danh sách nhân viên tham gia
 }

@@ -22,4 +22,8 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
     @Query(value = "SELECT COUNT(*) FROM Task WHERE project_id = :projectId", nativeQuery = true)
     Long countTasksByProjectId(@Param("projectId") Long projectId);
+
+    @Query(value = "SELECT SUM(duration) FROM Task WHERE project_id = :projectId GROUP BY project_id", nativeQuery = true)
+    Double countDurationByProjectId(@Param("projectId") Long projectId);
+
 }

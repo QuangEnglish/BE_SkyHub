@@ -68,7 +68,7 @@ public class TaskController {
     }
 
     @PostMapping("/updateTaskStatus/{id}")
-    public ResultResp<Object> deleteDepartment(@PathVariable("id") Long id,
+    public ResultResp<Object> updateTaskStatus(@PathVariable("id") Long id,
                                                @RequestParam("taskStatus") int taskStatus) {
         try{
             taskService.updateTaskStatus(id, taskStatus);

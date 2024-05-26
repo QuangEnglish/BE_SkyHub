@@ -46,5 +46,11 @@ public class Task extends  EntBase{
     @Basic
     @Column(name = "PRIORITY")
     private int priority;  //do uu tien
+    @Basic
+    @Column(name = "DURATION")
+    private double duration;  // khoảng thoi gian làm
+    @Basic
+    @Column(name = "COMMUNICATION")
+    private String communication; // trao đổi thông tin
 
 }
