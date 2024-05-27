@@ -1,14 +1,13 @@
 package com.company_management.service;
 
 import com.company_management.model.dto.TaskDTO;
-import com.company_management.model.entity.Task;
 import com.company_management.model.response.TaskResponse;
 
 import java.util.List;
 
 public interface TaskService {
 
-    List<Task> listTaskFindAll();
+    List<TaskDTO> listTaskFindAll();
 
     List<TaskResponse> listTaskFindByEmployeeAndProject(Long userDetailId, Long projectID);
     List<TaskDTO> listTaskDtoByEmployeeAndProject(Long userDetailId, Long projectID);

@@ -38,8 +38,29 @@ public class TaskServiceImpl implements TaskService {
     private final ProjectRepository projectRepository;
 
     @Override
-    public List<Task> listTaskFindAll() {
-        return taskRepository.findAll();
+    public List<TaskDTO> listTaskFindAll() {
+        List<Task> all = taskRepository.findAll();
+        List<TaskDTO> taskDTOList = new ArrayList<>();
+        all.forEach(res -> {
+            TaskDTO taskDTO = new TaskDTO();
+            taskDTO.setTaskCode(res.getTaskCode());
+            taskDTO.setTaskName(res.getTaskName());
+            taskDTO.setTaskStatus(res.getTaskStatus());
+            taskDTO.setTaskDescription(res.getTaskDescription());
+            taskDTO.setId(res.getId());
+            taskDTO.setStartDay(res.getStartDay());
+            taskDTO.setEndDay(res.getEndDay());
+            taskDTO.setPriority(res.getPriority());
+            taskDTO.setPriorityName(res.getPriority() == 1 ? "Low" : res.getPriority() == 2 ? "Normal" :  "Hight");
+            taskDTO.setDuration(res.getDuration());
+            if(res.getProjectId()!=null){
+                Project project = projectRepository.findById(res.getProjectId()).orElseThrow(() -> new AppException("ERR01", "Dự án không tồn tại!"));
+                taskDTO.setProjectName(project.getProjectName());
+            }
+            taskDTO.setProjectId(res.getProjectId());
+            taskDTOList.add(taskDTO);
+        });
+        return taskDTOList;
     }
 
     @Override
