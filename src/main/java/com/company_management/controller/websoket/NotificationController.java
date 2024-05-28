@@ -1,52 +1,41 @@
 package com.company_management.controller.websoket;
 
-import com.company_management.common.ResultResp;
-import com.company_management.model.response.Notifications;
-import com.company_management.service.NotificationService;
+import com.company_management.model.entity.UserDetail;
+import com.company_management.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/v1/notifications")
+@CrossOrigin(origins = "http://localhost:4200")
 public class NotificationController {
 
-    private final NotificationService notificationService;
 
-    private final SimpMessagingTemplate template;
+    private final EmployeeService employeeService;
 
-    private Notifications notifications = new Notifications(0);
+    private final SimpMessagingTemplate messagingTemplate;
 
-    @MessageMapping("/send")
-    @SendTo("/topic/notifications")
-    public ResultResp<Object> sendGlobalNotification(@RequestParam String message) throws InterruptedException {
-        Thread.sleep(1000);
-        notificationService.sendGlobalNotification(message);
-        return ResultResp.success(null);
+    @Scheduled(cron = "0 0 8 * * ?")
+    public void sendBirthdayNotifications() {
+        List<UserDetail> employees = employeeService.getTodayBirthdayEmployees();
+        if (!employees.isEmpty()) {
+            messagingTemplate.convertAndSend("/topic/birthdays", employees);
+        }
     }
 
-    @MessageMapping("/private-message")
-    @SendTo("/topic/private-messages")
-    public ResultResp<Object> sendPrivateNotification(final Principal principal, @RequestParam String message) throws InterruptedException {
-        Thread.sleep(1000);
-        notificationService.sendPrivateNotification(principal.getName(), message);
-        return ResultResp.success(null);
+    @GetMapping("/birthdays")
+    public List<UserDetail> getTodayBirthdayEmployees() {
+        return employeeService.getTodayBirthdayEmployees();
     }
 
-    @GetMapping("/notify")
-    public String getNotification() {
-        // Increment Notification by one
-        notifications.increment();
-        // Push notifications to front-end
-        template.convertAndSend("/topic/notification", notifications);
-        return "Notifications successfully sent to Angular !";
+    @GetMapping("/birthdays/month")
+    public List<UserDetail> getEmployeesWithBirthdaysInCurrentMonth() {
+        return employeeService.getEmployeesWithBirthdaysInCurrentMonth();
     }
-
 
 }

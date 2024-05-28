@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface EmployeeRepository extends JpaRepository<UserDetail, Long>, EmployeeRepositoryCustom {
 
@@ -14,5 +16,11 @@ public interface EmployeeRepository extends JpaRepository<UserDetail, Long>, Emp
     @Modifying
     @Query(value = "update UserDetail u set u.isActive = 0, u.updatedDate = now(), u.updatedUser = :user where u.id = :id and u.isActive = 1 or u.isActive = 2 ")
     int deleteById(Long id, Long user);
+
+    @Query("SELECT e FROM UserDetail e WHERE MONTH(e.birthday) = MONTH(CURRENT_DATE) AND DAY(e.birthday) = DAY(CURRENT_DATE)")
+    List<UserDetail> findEmployeesWithBirthdaysToday();
+
+    @Query("SELECT e FROM UserDetail e WHERE MONTH(e.birthday) = MONTH(CURRENT_DATE)")
+    List<UserDetail> findEmployeesWithBirthdaysInCurrentMonth();
 
 }

@@ -362,4 +362,15 @@ public class EmployeeServiceImpl implements EmployeeService {
         return null;
     }
 
+    @Override
+    public List<UserDetail> getTodayBirthdayEmployees() {
+        return employeeRepository.findEmployeesWithBirthdaysToday();
+    }
+
+    @Override
+    public List<UserDetail> getEmployeesWithBirthdaysInCurrentMonth() {
+        return employeeRepository.findEmployeesWithBirthdaysInCurrentMonth();
+    }
+
+
 }
