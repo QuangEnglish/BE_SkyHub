@@ -64,7 +64,10 @@ public class ProjectServiceImpl implements ProjectService {
             );
             lstProjects.add(project);
         });
-        return lstProjects;
+        return lstProjects.stream().peek(res -> {
+            Long l = taskRepository.countTasksByProjectId(res.getId());
+            res.setTaskNumber(l);
+        }).toList();
     }
 
     @Override
